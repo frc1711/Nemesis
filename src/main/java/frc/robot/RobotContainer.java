@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.RunShooter;
-import frc.robot.commands.Shoot;
 import frc.robot.commands.WestCoastDrive;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.Shooter;
@@ -50,7 +49,6 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    a.whenActive(new Shoot(shooter)); 
 
   }
 
