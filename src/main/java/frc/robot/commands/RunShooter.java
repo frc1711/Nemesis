@@ -43,6 +43,8 @@ public class RunShooter extends CommandBase {
       shooter.forwardShoot(forwards.getAsDouble()); 
     if(backwards.getAsDouble() > .01)
       shooter.backwardShoot(backwards.getAsDouble()); 
+    else 
+      shooter.stop(); 
   }
 
   // Called once the command ends or is interrupted.

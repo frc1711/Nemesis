@@ -11,10 +11,12 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.RunShooter;
+import frc.robot.commands.Shoot;
 import frc.robot.commands.WestCoastDrive;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -27,7 +29,8 @@ public class RobotContainer {
   private final DriveSystem driveSystem = new DriveSystem(false);
   private final Shooter shooter = new Shooter(); 
 
-  public Joystick driverOne = new Joystick(1); 
+  public Joystick driverOne = new Joystick(0); 
+  public JoystickButton a = new JoystickButton(driverOne, 1); 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -47,6 +50,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    a.whenActive(new Shoot(shooter)); 
 
   }
 

@@ -25,6 +25,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void forwardShoot(double speed) {
+    System.out.println("B");
     shooterTalon.set(speed); 
     altShooterTalon.set(speed); 
   }
@@ -32,6 +33,11 @@ public class Shooter extends SubsystemBase {
   public void backwardShoot(double speed) {
     shooterTalon.set(-speed); 
     altShooterTalon.set(-speed); 
+  }
+
+  public void stop() {
+    shooterTalon.set(0); 
+    altShooterTalon.set(0);
   }
 
   @Override
