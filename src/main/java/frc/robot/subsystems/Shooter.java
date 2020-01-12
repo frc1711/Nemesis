@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -19,25 +20,55 @@ public class Shooter extends SubsystemBase {
   private WPI_TalonSRX shooterTalon; 
   private WPI_TalonSRX altShooterTalon; 
 
+  
+
   public Shooter() {
     shooterTalon = new WPI_TalonSRX(Constants.shooter); 
     altShooterTalon = new WPI_TalonSRX(Constants.shooterTwo); 
+
+    altShooterTalon.set(ControlMode.Follower, Constants.shooter);
+    
+    //TODO: remove
+    //shooterTalon.configMotionCruiseVelocity(Constants.kCruiseVelocity); 
+    //shooterTalon.configMotionAcceleration(Constants.kCruiseVelocity); 
+    shooterTalon.config_kP(0, Constants.kP); 
+    shooterTalon.config_kI(0, Constants.kI); 
+    shooterTalon.config_kD(0, Constants.kD);
+    shooterTalon.config_kF(0, Constants.kF);
+    
   }
 
   public void forwardShoot(double speed) {
-    System.out.println("B");
     shooterTalon.set(speed); 
-    altShooterTalon.set(speed); 
   }
 
   public void backwardShoot(double speed) {
     shooterTalon.set(-speed); 
-    altShooterTalon.set(-speed); 
   }
 
   public void stop() {
     shooterTalon.set(0); 
-    altShooterTalon.set(0);
+  }
+
+  public double getRPM() {
+    double nativeUnitVelocity = shooterTalon.getSelectedSensorVelocity(); 
+    nativeUnitVelocity /= .1;
+    nativeUnitVelocity /= 4096;
+    nativeUnitVelocity *= 60; 
+    return nativeUnitVelocity; 
+  }
+
+  public double getVelocity() {
+    return shooterTalon.getSelectedSensorVelocity(); 
+  }
+
+  public void toVelocity(double velocity) {
+    shooterTalon.set(ControlMode.Velocity, velocity); 
+  }
+
+  public void toRPM(double velocity) {
+    double RPM = velocity * 4096; 
+    shooterTalon.set(ControlMode.Velocity, RPM); 
   }
 
   @Override

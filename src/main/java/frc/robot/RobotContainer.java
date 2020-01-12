@@ -10,12 +10,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.RunClimber;
 import frc.robot.commands.RunShooter;
 import frc.robot.commands.WestCoastDrive;
-import frc.robot.subsystems.DriveSystem;
+import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Shooter;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -25,19 +25,21 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final DriveSystem driveSystem = new DriveSystem(false);
+  private final DriveTrain driveTrain = new DriveTrain(false);
   private final Shooter shooter = new Shooter(); 
+  private final Climber climber = new Climber(); 
 
   public Joystick driverOne = new Joystick(0); 
-  public JoystickButton a = new JoystickButton(driverOne, 1); 
+  public Joystick driverTwo = new Joystick(1); 
+
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     //Assign default commands 
-    driveSystem.setDefaultCommand(new WestCoastDrive(driveSystem, () -> driverOne.getRawAxis(1), () -> driverOne.getRawAxis(4))); 
-    shooter.setDefaultCommand(new RunShooter(shooter, () -> driverOne.getRawAxis(2), () -> driverOne.getRawAxis(3))); 
-    
+    driveTrain.setDefaultCommand(new WestCoastDrive(driveTrain, () -> driverOne.getRawAxis(1), () -> driverOne.getRawAxis(4))); 
+    shooter.setDefaultCommand(new RunShooter(shooter, driverOne)); 
+    climber.setDefaultCommand(new RunClimber(climber, () -> driverTwo.getRawAxis(1))); 
     // Configure button bindings
     configureButtonBindings();
   }

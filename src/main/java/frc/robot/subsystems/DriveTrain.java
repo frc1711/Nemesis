@@ -7,8 +7,6 @@
 
 package frc.robot.subsystems;
 
-import java.lang.reflect.Constructor;
-
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
@@ -21,7 +19,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 
-public class DriveSystem extends SubsystemBase {
+public class DriveTrain extends SubsystemBase {
   /**
    * Creates a new DriveSystem.
    */
@@ -40,7 +38,7 @@ public class DriveSystem extends SubsystemBase {
 
   Boolean sparkMaxUse; 
 
-  public DriveSystem(Boolean sparkMaxUse) {
+  public DriveTrain(Boolean sparkMaxUse) {
     this.sparkMaxUse = sparkMaxUse; 
 
     if (sparkMaxUse) {
@@ -66,7 +64,7 @@ public class DriveSystem extends SubsystemBase {
     return sparkMaxUse; 
   }
 
-  public void stopRobot() {
+  public void stop() {
     frontRightDrive.set(0);
     frontLeftDrive.set(0);
     rearRightDrive.set(0);
@@ -77,7 +75,7 @@ public class DriveSystem extends SubsystemBase {
     if(Math.abs(speed) > .01 || Math.abs(rot) > .01)
       rDrive.arcadeDrive(speed, rot); 
     else 
-      stopRobot();
+      stop();
   }
 
   

@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
@@ -18,16 +19,13 @@ public class RunShooter extends CommandBase {
    */
 
   private final Shooter shooter; 
+ 
 
-  private final DoubleSupplier forwards; 
-  private final DoubleSupplier backwards; 
+  private final Joystick stick; 
 
-  public RunShooter(Shooter shooter, DoubleSupplier forwards, DoubleSupplier backwards) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public RunShooter(Shooter shooter, Joystick stick) {
     addRequirements(shooter);
-
-    this.forwards = forwards; 
-    this.backwards = backwards; 
+    this.stick = stick; 
     this.shooter = shooter; 
   }
 
@@ -35,16 +33,23 @@ public class RunShooter extends CommandBase {
   @Override
   public void initialize() {
   }
-
+  //-5827
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(forwards.getAsDouble() > .01) 
-      shooter.forwardShoot(forwards.getAsDouble()); 
-    if(backwards.getAsDouble() > .01)
-      shooter.backwardShoot(backwards.getAsDouble()); 
-    else 
+    System.out.println("RPMa: " + shooter.getVelocity()); 
+
+    if(stick.getRawButton(1)) { 
+      shooter.toVelocity(1000);
+    } else if(stick.getRawButton(2)) {
+      shooter.forwardShoot(.31); 
+    } else if(stick.getRawButton(3)) {
+      shooter.forwardShoot(.30); 
+    } else if(stick.getRawButton(4)) {
+      shooter.backwardShoot(.2); 
+    } else {
       shooter.stop(); 
+    }
   }
 
   // Called once the command ends or is interrupted.
