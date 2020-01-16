@@ -19,7 +19,7 @@ public class RunShooter extends CommandBase {
    */
 
   private final Shooter shooter; 
- 
+  int x; 
 
   private final Joystick stick; 
 
@@ -32,21 +32,20 @@ public class RunShooter extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    x = 0; 
   }
   //-5827
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("RPMa: " + shooter.getVelocity()); 
-
+    x++;
+    if (x > 3){  
+      System.out.println("RPMa: " + shooter.getVelocity()); 
+      x = 0; 
+    }
+    
     if(stick.getRawButton(1)) { 
-      shooter.toVelocity(1000);
-    } else if(stick.getRawButton(2)) {
-      shooter.forwardShoot(.31); 
-    } else if(stick.getRawButton(3)) {
-      shooter.forwardShoot(.30); 
-    } else if(stick.getRawButton(4)) {
-      shooter.backwardShoot(.2); 
+      shooter.toVelocity(7000);
     } else {
       shooter.stop(); 
     }

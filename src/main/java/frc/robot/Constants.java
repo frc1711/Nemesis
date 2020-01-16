@@ -26,14 +26,11 @@ public final class Constants {
 
     public static int climber = 6; 
 
-
-    //SHOOTER PID (all placeholders) TODO: replace placeholders
-    public static int kVelocity = 22000; 
-    public static int kCruiseVelocity = kVelocity/2; 
-    public static double kP = 0.0; 
-    public static double kD = kP * 10; 
-    public static double kI = 0;
-    public static double kF = 1; 
+    //shooter PID loop Doubles
+    public static double shooterkP = 0.0065; 
+    public static double shooterkD = shooterkP * 5; 
+    public static double shooterkI = 0.0001;
+    public static double shooterkF = 0.045; 
 
     public static enum RoboDir { 
         LEFT (-1), 

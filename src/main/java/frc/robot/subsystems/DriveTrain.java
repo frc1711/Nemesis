@@ -50,14 +50,14 @@ public class DriveTrain extends SubsystemBase {
       frontRightDrive = new WPI_TalonSRX(Constants.frd); 
       frontLeftDrive = new WPI_TalonSRX(Constants.fld); 
       rearRightDrive = new WPI_TalonSRX(Constants.rrd); 
-      rearLeftDrive = new WPI_TalonSRX(Constants.rld); 
+      rearLeftDrive = new WPI_TalonSRX(Constants.rld);
     }
 
     rightDrive = new SpeedControllerGroup(frontRightDrive, rearRightDrive); 
     leftDrive = new SpeedControllerGroup(frontLeftDrive, rearLeftDrive); 
 
     rDrive = new DifferentialDrive(rightDrive, leftDrive); 
-
+    
   }
 
   public Boolean getSparkMaxUse() {

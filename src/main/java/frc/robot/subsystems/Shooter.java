@@ -25,16 +25,15 @@ public class Shooter extends SubsystemBase {
   public Shooter() {
     shooterTalon = new WPI_TalonSRX(Constants.shooter); 
     altShooterTalon = new WPI_TalonSRX(Constants.shooterTwo); 
-
+  
+    shooterTalon.setSafetyEnabled(false); 
+    altShooterTalon.setSafetyEnabled(false); 
     altShooterTalon.set(ControlMode.Follower, Constants.shooter);
     
-    //TODO: remove
-    //shooterTalon.configMotionCruiseVelocity(Constants.kCruiseVelocity); 
-    //shooterTalon.configMotionAcceleration(Constants.kCruiseVelocity); 
-    shooterTalon.config_kP(0, Constants.kP); 
-    shooterTalon.config_kI(0, Constants.kI); 
-    shooterTalon.config_kD(0, Constants.kD);
-    shooterTalon.config_kF(0, Constants.kF);
+    shooterTalon.config_kP(0, Constants.shooterkP); 
+    shooterTalon.config_kI(0, Constants.shooterkI); 
+    shooterTalon.config_kD(0, Constants.shooterkD);
+    shooterTalon.config_kF(0, Constants.shooterkF);
     
   }
 
@@ -47,7 +46,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void stop() {
-    shooterTalon.set(0); 
+    shooterTalon.set(ControlMode.PercentOutput, 0); 
   }
 
   public double getRPM() {
