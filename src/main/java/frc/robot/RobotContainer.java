@@ -25,7 +25,7 @@ import frc.robot.subsystems.Shooter;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final DriveTrain driveTrain = new DriveTrain(false);
+  private final DriveTrain driveTrain = new DriveTrain(24.125, 10.75);
   private final Shooter shooter = new Shooter(); 
   private final Climber climber = new Climber(); 
 

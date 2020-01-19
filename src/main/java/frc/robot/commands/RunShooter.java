@@ -34,7 +34,7 @@ public class RunShooter extends CommandBase {
   public void initialize() {
     x = 0; 
   }
-  //-5827
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
@@ -45,7 +45,7 @@ public class RunShooter extends CommandBase {
     }
     
     if(stick.getRawButton(1)) { 
-      shooter.toVelocity(7000);
+      shooter.toVelocity(18000);
     } else {
       shooter.stop(); 
     }
