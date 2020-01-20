@@ -10,15 +10,19 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.RunClimber;
 import frc.robot.commands.RunShooter;
 import frc.robot.commands.WestCoastDrive;
 import frc.robot.commands.Auton.DriveForward;
+import frc.robot.commands.GetColor;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ColorSensor;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -31,11 +35,14 @@ public class RobotContainer {
   private final DriveTrain driveTrain = new DriveTrain(24.125, 10.75);
   private final Shooter shooter = new Shooter(); 
   private final Climber climber = new Climber(); 
+  private final ColorSensor colorSensor = new ColorSensor();
 
   private final CommandBase autonomousCommand = new DriveForward(driveTrain, 3, .2, 100); 
   
   public Joystick driverOne = new Joystick(0); 
   public Joystick driverTwo = new Joystick(1); 
+  public JoystickButton getColorButton = new JoystickButton(driverOne, 1);
+
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -44,7 +51,8 @@ public class RobotContainer {
     //Assign default commands 
     driveTrain.setDefaultCommand(new WestCoastDrive(driveTrain, () -> driverOne.getRawAxis(1), () -> driverOne.getRawAxis(4))); 
     shooter.setDefaultCommand(new RunShooter(shooter, driverOne)); 
-    climber.setDefaultCommand(new RunClimber(climber, () -> driverTwo.getRawAxis(1))); 
+    climber.setDefaultCommand(new RunClimber(climber, () -> driverTwo.getRawAxis(1)));
+
     // Configure button bindings
     configureButtonBindings();
   }
@@ -56,7 +64,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-
+    getColorButton.whenHeld(new GetColor(colorSensor));
   }
 
 
