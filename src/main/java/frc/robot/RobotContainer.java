@@ -10,9 +10,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.commands.RunClimber;
 import frc.robot.commands.RunShooter;
 import frc.robot.commands.WestCoastDrive;
+import frc.robot.commands.Auton.DriveForward;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Shooter;
@@ -29,6 +32,8 @@ public class RobotContainer {
   private final Shooter shooter = new Shooter(); 
   private final Climber climber = new Climber(); 
 
+  private final CommandBase autonomousCommand = new DriveForward(driveTrain, 3, .2, 100); 
+  
   public Joystick driverOne = new Joystick(0); 
   public Joystick driverTwo = new Joystick(1); 
 
@@ -60,7 +65,8 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public void getAutonomousCommand() {
+  public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
+    return autonomousCommand; 
   }
 }

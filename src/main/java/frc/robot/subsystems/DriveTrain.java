@@ -122,6 +122,13 @@ public class DriveTrain extends SubsystemBase {
     return average; 
   }
 
+  public void driveStatic(double speed) {
+    frontLeftDrive.set(speed); 
+    frontRightDrive.set(speed); 
+    rearLeftDrive.set(speed);
+    rearRightDrive.set(speed);  
+  }
+
   public void zeroEncoders() {
     //TODO: do Spark MAXes tare automatically? 
   }
