@@ -79,22 +79,14 @@ public class DriveTrain extends SubsystemBase {
   private double inchPerRot(double wheelRadius, double gearRatio) {
     return (wheelRadius / gearRatio); 
   }
-
-  private double getCountsToInchConst() {
-    return inchPerRot(kWheelRadius, kGearRatio)/countsPerRot(); 
-  }
-
-  private double getInchToCountsConst() {
-    return countsPerRot()/inchPerRot(kWheelRadius, kGearRatio); 
-  }
   
   //AUTON CONVERSION METHODS
   public double inchToCount(double inches) {
-    return getInchToCountsConst() * inches; 
+    return (countsPerRot()/inchPerRot(kWheelRadius, kGearRatio)) * inches; 
   }
 
   public double countToinch(double counts) {
-    return getCountsToInchConst() * counts; 
+    return (inchPerRot(kWheelRadius, kGearRatio)/countsPerRot())* counts; 
   }
 
   //PUBLIC DRIVE METHODS
