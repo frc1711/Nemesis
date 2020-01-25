@@ -32,13 +32,13 @@ import frc.robot.subsystems.ColorSensor;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  //24.145, 10.71
+
   private final DriveTrain driveTrain = new DriveTrain(24.125, 10.71);
   //private final Shooter shooter = new Shooter(); 
   //private final Climber climber = new Climber(); 
   //private final ColorSensor colorSensor = new ColorSensor();
 
-  private final Command autonomousCommand = new DriveForward(driveTrain, 11.75, .05, 100); 
+  private final Command autonomousCommand = new DriveForward(driveTrain, -11.75, .1, 100); 
   
   public Joystick driverOne = new Joystick(0); 
   public Joystick driverTwo = new Joystick(1); 

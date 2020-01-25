@@ -20,10 +20,12 @@ public class DriveForward extends CommandBase {
 
   public DriveForward(DriveTrain driveTrain, double inches, double speed, double seconds) {
     addRequirements(driveTrain); 
+    
     this.driveTrain = driveTrain; 
     this.speed = speed; 
     timeout = seconds * 1000;  //time in seconds, system in millis 
     counts = driveTrain.inchToCount(inches); //converting inches to encoder counts
+    
     if(Math.abs(counts) != counts) 
       forward = false; 
     else
@@ -42,17 +44,16 @@ public class DriveForward extends CommandBase {
   public void execute() {
     double encoderCounts = driveTrain.getAvgEncCount(driveTrain.getEncCount());    
     if(forward) {
-      if(counts-encoderCounts > 10) {
+      if(counts-encoderCounts > 100) {
         driveTrain.drive(speed);
       } else {
         driveTrain.drive(speed*.5); 
       }
     } else {
-      if(counts - encoderCounts > 1) {
+      if(counts - encoderCounts < -100) {
         driveTrain.drive(-speed); 
       } else {
         driveTrain.drive(-speed*.5); 
-        System.out.println("A"); 
       }
     }
     
@@ -68,9 +69,16 @@ public class DriveForward extends CommandBase {
   @Override
   public boolean isFinished() {
     double encoderCounts = driveTrain.getIndividualEncCount();    
-    if(Math.abs(counts-encoderCounts) > 1)
+    
+    if(Math.abs(counts-encoderCounts) > 2){
+      System.out.println("Running...");
       return false;
-    else 
+    } else {
+      System.out.println("Not Running."); 
+      System.out.println(Math.abs(counts-encoderCounts)); 
+      System.out.println(counts-encoderCounts);
       return true; 
+    }
+
   }
 }
