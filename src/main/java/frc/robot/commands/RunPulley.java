@@ -7,61 +7,40 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Pulley;
 
-public class RunShooter extends CommandBase {
-  /**
-   * Creates a new RunShooter.
-   */
+public class RunPulley extends CommandBase {
+  
+  Pulley pulleySystem;
 
-  private final Shooter shooter;
+  private int timeLeftToRun;
 
-  int x; 
+  public RunPulley(Pulley pSys) {
+    pulleySystem = pSys;
 
-  private final Joystick stick; 
-
-  public RunShooter(Shooter shooter, Joystick stick) {
-    addRequirements(shooter);
-    this.stick = stick; 
-    this.shooter = shooter; 
+    addRequirements(pulleySystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shooter.stop(); 
-    x = 0; 
+    timeLeftToRun = pulleySystem.timeToIndex;
+    pulleySystem.startMoving();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // x++;
-    // if (x > 3){  
-    //   System.out.println("Velocity: " + shooter.getVelocity()); 
-    //   x = 0; 
-    // }
-    
-    if(stick.getRawButton(1)) { 
-      shooter.toVelocity(18000);
-    } else {
-      shooter.stop(); 
-    }
-
-
-    if(stick.getRawButton(2)) {
-      shooter.startFlyWheel();
-    } else {
-      shooter.stopFlyWheel();
+    timeLeftToRun --;
+    if (timeLeftToRun <= 0) {
+      pulleySystem.stopMoving();
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.stop(); 
   }
 
   // Returns true when the command should end.

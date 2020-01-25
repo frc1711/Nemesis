@@ -24,7 +24,14 @@ public final class Constants {
     public static int shooter = 0; 
     public static int shooterTwo = 5; 
 
+    public static int flyWheel = 8;
+    public static double flyWheelSpeed = 0.5;
+
     public static int climber = 6; 
+
+    public static int pulley = 7;
+    public static int timeToIndex = 20; //in frames where each frame is 20 milliseconds, 50 = 1 second
+    public static double pulleySpeed = 0.3;
 
     //shooter PID loop Doubles
     public static double shooterkP = 0.045; 

@@ -17,14 +17,17 @@ public class Shooter extends SubsystemBase {
   /**
    * Creates a new Shooter.
    */
-  private WPI_TalonSRX shooterTalon; 
-  private WPI_TalonSRX altShooterTalon; 
+  private WPI_TalonSRX shooterTalon;
+  private WPI_TalonSRX altShooterTalon;
+
+  private WPI_TalonSRX flyWheel;
 
   
 
   public Shooter() {
     shooterTalon = new WPI_TalonSRX(Constants.shooter); 
     altShooterTalon = new WPI_TalonSRX(Constants.shooterTwo); 
+    flyWheel = new WPI_TalonSRX(Constants.flyWheel);
   
     shooterTalon.setSafetyEnabled(false); 
     altShooterTalon.setSafetyEnabled(false); 
@@ -34,15 +37,10 @@ public class Shooter extends SubsystemBase {
     shooterTalon.config_kI(0, Constants.shooterkI); 
     shooterTalon.config_kD(0, Constants.shooterkD);
     shooterTalon.config_kF(0, Constants.shooterkF);
-    
   }
 
   public void forwardShoot(double speed) {
     shooterTalon.set(speed); 
-  }
-
-  public void backwardShoot(double speed) {
-    shooterTalon.set(-speed); 
   }
 
   public void stop() {
@@ -69,6 +67,19 @@ public class Shooter extends SubsystemBase {
     double RPM = velocity * 4096; 
     shooterTalon.set(ControlMode.Velocity, RPM); 
   }
+
+
+
+  //Fly-Wheel stuff
+  public void startFlyWheel() {
+    flyWheel.set(Constants.flyWheelSpeed);
+  }
+
+  public void stopFlyWheel() {
+    flyWheel.set(0);
+  }
+
+
 
   @Override
   public void periodic() {
