@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
 /** 
- * @author: Lou DeZeeuw, Gabe Seaver
+ * @author: Lou DeZeeuw, Gabriel Seaver
 */
 
 public class RunShooter extends CommandBase {

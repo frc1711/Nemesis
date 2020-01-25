@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 /** 
-* @author: Lou DeZeeuw, Gabe Seaver
+* @author: Lou DeZeeuw, Gabriel Seaver
 */
 
 public class Shooter extends SubsystemBase implements PIDHelp {

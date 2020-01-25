@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ColorSensor;
 
 /** 
-* @author: Gabe Seaver, Lou DeZeeuw  
+* @author: Gabriel Seaver, Lou DeZeeuw  
 */
 
 public class GetColor extends CommandBase {

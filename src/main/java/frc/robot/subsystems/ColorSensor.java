@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /** 
-* @author: Gabe Seaver  
+* @author: Gabriel Seaver  
 */
 
 public class ColorSensor extends SubsystemBase {

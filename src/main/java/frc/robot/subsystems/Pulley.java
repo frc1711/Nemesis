@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 /** 
-* @author: Lou DeZeeuw, Gabe Seaver  
+* @author: Lou DeZeeuw, Gabriel Seaver  
 */
 
 public class Pulley extends SubsystemBase implements PIDHelp {
@@ -39,7 +39,7 @@ public class Pulley extends SubsystemBase implements PIDHelp {
   public void stop() {
     pulleyTalon.set(0);
   }
-  
+
   public double getRPM() {
     return PIDHelp.getRPM(pulleyTalon); 
   }
