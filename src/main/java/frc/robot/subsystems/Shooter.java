@@ -17,8 +17,8 @@ public class Shooter extends SubsystemBase {
   /**
    * Creates a new Shooter.
    */
-  private WPI_TalonSRX shooterTalon; 
-  private WPI_TalonSRX altShooterTalon; 
+  private WPI_TalonSRX shooterTalon;
+  private WPI_TalonSRX altShooterTalon;
 
   
 
