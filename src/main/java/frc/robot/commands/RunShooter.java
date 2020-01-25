@@ -16,7 +16,8 @@ public class RunShooter extends CommandBase {
    * Creates a new RunShooter.
    */
 
-  private final Shooter shooter; 
+  private final Shooter shooter;
+
   int x; 
 
   private final Joystick stick; 
@@ -47,6 +48,13 @@ public class RunShooter extends CommandBase {
       shooter.toVelocity(18000);
     } else {
       shooter.stop(); 
+    }
+
+
+    if(stick.getRawButton(2)) {
+      shooter.startFlyWheel();
+    } else {
+      shooter.stopFlyWheel();
     }
   }
 

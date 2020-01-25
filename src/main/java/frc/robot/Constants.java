@@ -24,6 +24,9 @@ public final class Constants {
     public static int shooter = 0; 
     public static int shooterTwo = 5; 
 
+    public static int flyWheel = 8;
+    public static double flyWheelSpeed = 0.5;
+
     public static int climber = 6; 
 
     public static int pulley = 7;
