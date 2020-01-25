@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.RoboDir;
 
 
 public class DriveTrain extends SubsystemBase {
@@ -40,11 +41,10 @@ public class DriveTrain extends SubsystemBase {
   private CANEncoder rrEncoder; 
   private CANEncoder rlEncoder; 
   
-  private CANEncoder[] encArr = {frEncoder, flEncoder, rrEncoder, rlEncoder}; 
-
   private static double kWheelRadius; 
   private static double kGearRatio; 
 
+  private static CANEncoder[] encArr; 
 
   Boolean sparkMaxUse; 
 
@@ -52,9 +52,12 @@ public class DriveTrain extends SubsystemBase {
     //MOTOR DEFINITIONS
     frontRightDrive = new CANSparkMax(Constants.frd, MotorType.kBrushless); 
     frontLeftDrive = new CANSparkMax(Constants.fld, MotorType.kBrushless); 
-    rearRightDrive = new CANSparkMax(Constants.frd, MotorType.kBrushless); 
-    rearLeftDrive = new CANSparkMax(Constants.frd, MotorType.kBrushless); 
+    rearRightDrive = new CANSparkMax(Constants.rrd, MotorType.kBrushless); 
+    rearLeftDrive = new CANSparkMax(Constants.rld, MotorType.kBrushless); 
 
+    frontRightDrive.setInverted(false); 
+    rearRightDrive.setInverted(false); 
+    
     //ENCODER DEFINITIONS
     frEncoder = frontRightDrive.getEncoder(); 
     flEncoder = frontLeftDrive.getEncoder(); 
@@ -69,11 +72,15 @@ public class DriveTrain extends SubsystemBase {
 
     kWheelRadius = wheelRadius; 
     kGearRatio = gearRatio; 
+  
+    encArr = new CANEncoder[]{frEncoder, flEncoder, rrEncoder, rlEncoder}; 
+
+    rDrive.setSafetyEnabled(false);
   }
 
   //AUTON MATH
   private double countsPerRot() {
-    return frEncoder.getCountsPerRevolution(); 
+    return 42; 
   }
 
   private double inchPerRot(double wheelRadius, double gearRatio) {
@@ -108,29 +115,60 @@ public class DriveTrain extends SubsystemBase {
   public double[] getEncCount() {
     double[] arr = new double[4]; 
     for(int i = 0; i < encArr.length; i++) {
-      arr[i] = encArr[i].getPosition(); 
+      if ((i+1)%2 == 0)
+        arr[i] = encArr[i].getPosition() * 42; 
+      else
+        arr[i] = -encArr[i].getPosition() * 42; 
+
     }
     return arr; 
   }
 
-  public double getAvgEncCount() {
-    double[] arr = getEncCount(); 
+  public double getIndividualEncCount() {
+    return flEncoder.getPosition()*42; 
+  }
+
+  public double getAvgEncCount(double[] arr) {
     int average = 0; 
     for(int i = 0; i < arr.length; i++) {
       average += arr[i]; 
     }
+    average /= (arr.length+1); 
+    
     return average; 
   }
 
-  public void driveStatic(double speed) {
+  public double getCountConstant() {
+    return (inchPerRot(kWheelRadius, kGearRatio)/countsPerRot());
+  }
+
+
+  public void drive(double speed, RoboDir direction) {
+    if(direction == RoboDir.STRAIGHT) {
+      frontLeftDrive.set(speed); 
+      frontRightDrive.set(-speed); 
+      rearLeftDrive.set(speed);
+      rearRightDrive.set(-speed);  
+    } else {
+      frontLeftDrive.set(direction.getNum()*speed); 
+      frontRightDrive.set(direction.getNum()*speed); 
+      rearLeftDrive.set(direction.getNum()*speed); 
+      rearRightDrive.set(direction.getNum()*speed); 
+    }
+  }
+
+  public void drive(double speed) {
     frontLeftDrive.set(speed); 
-    frontRightDrive.set(speed); 
+    frontRightDrive.set(-speed); 
     rearLeftDrive.set(speed);
-    rearRightDrive.set(speed);  
+    rearRightDrive.set(-speed);
   }
 
   public void zeroEncoders() {
-    //TODO: do Spark MAXes tare automatically? 
+    frEncoder.setPosition(0); 
+    flEncoder.setPosition(0); 
+    rrEncoder.setPosition(0); 
+    rlEncoder.setPosition(0); 
   }
 
   public void zeroGryo() {

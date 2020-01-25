@@ -5,7 +5,9 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.Auton;
+//your math is off 
+
+package frc.robot.commands.auton;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
@@ -18,6 +20,7 @@ public class DriveForward extends CommandBase {
   double counts; 
   double speed; 
   double timeout; 
+  boolean forward; 
 
   public DriveForward(DriveTrain driveTrain, double inches, double speed, double seconds) {
     addRequirements(driveTrain); 
@@ -25,6 +28,10 @@ public class DriveForward extends CommandBase {
     this.speed = speed; 
     timeout = seconds * 1000;  //time in seconds, system in millis 
     counts = driveTrain.inchToCount(inches); //converting inches to encoder counts
+    if(Math.abs(counts) != counts) 
+      forward = false; 
+    else
+      forward = true; 
   }
 
   // Called when the command is initially scheduled.
@@ -37,10 +44,20 @@ public class DriveForward extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(counts - driveTrain.getAvgEncCount() < 500) { //this value may have to change. It's a sixteenth of an inch. 
-      driveTrain.driveStatic(.5 * speed); 
+    double encoderCounts = driveTrain.getAvgEncCount(driveTrain.getEncCount());    
+    if(forward) {
+      if(counts-encoderCounts > 10) {
+        driveTrain.drive(speed);
+      } else {
+        driveTrain.drive(speed*.5); 
+      }
     } else {
-      driveTrain.driveStatic(speed); 
+      if(counts - encoderCounts > 1) {
+        driveTrain.drive(-speed); 
+      } else {
+        driveTrain.drive(-speed*.5); 
+        System.out.println("A"); 
+      }
     }
     
   }
@@ -48,15 +65,16 @@ public class DriveForward extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    System.out.println("AUTONOMOUS STOPPED."); 
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(counts > 0 && counts - driveTrain.getAvgEncCount() > 50) 
-      return false; 
-    else  
+    double encoderCounts = driveTrain.getIndividualEncCount();    
+    if(Math.abs(counts-encoderCounts) > 1)
+      return false;
+    else 
       return true; 
-    //TODO: Write negative direction
   }
 }

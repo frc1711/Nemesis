@@ -22,12 +22,6 @@ public class GetColor extends CommandBase {
     this.colorSensor = colorSensor;
   }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    
-  }
-
   public class ColorCoordinate { //THIS IS A CLASS FOR DESCRIBING COLOR AS A 3D COORDINATE
 
     double red;
@@ -51,7 +45,7 @@ public class GetColor extends CommandBase {
 
   }
 
-  private String categorizeColor(double r, double g, double b) { //This returns the color found in uppercase
+  private int categorizeColor(double r, double g, double b) { //This returns the color found in uppercase
     /*
     Goal of this function: Take any 3D coordinate (representing an rgb color) and categorize it as either yellow, green, red, or blue
     (based on the rgb values of the colors in the competition)
@@ -63,7 +57,6 @@ public class GetColor extends CommandBase {
     So we're going to find which of the points above is closest to the color the sensor read in 3D space, and categorize the color
     that the sensor is reading
     */
-    String category = "";
 
     ColorCoordinate sensorC = new ColorCoordinate(r, g, b);
 
@@ -71,6 +64,14 @@ public class GetColor extends CommandBase {
     ColorCoordinate greenC = new ColorCoordinate(0.2, 0.55, 0.24);
     ColorCoordinate redC = new ColorCoordinate(0.46, 0.38, 0.16);
     ColorCoordinate yellowC = new ColorCoordinate(0.32, 0.55, 0.13);
+
+    /*
+    * COLOR LIST: 
+    * blue = 0, 
+    * green = 1, 
+    * red = 2, 
+    * yellow = 3
+    */ 
 
     ColorCoordinate[] colorList = {blueC, greenC, redC, yellowC}; //List of category colors
 
@@ -85,19 +86,13 @@ public class GetColor extends CommandBase {
       }
     }
 
-    if (indexOfClosestCategory == 0) {
-      category = "BLUE";
-    } else if (indexOfClosestCategory == 1) {
-      category = "GREEN";
-    } else if (indexOfClosestCategory == 2) {
-      category = "RED";
-    } else if (indexOfClosestCategory == 3) {
-      category = "YELLOW";
-    } else {
-      category = "NOT_FOUND"; //This should never happen
-    }
+    return indexOfClosestCategory; 
 
-    return category;
+  }
+
+  @Override
+  public void initialize() {
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -107,11 +102,7 @@ public class GetColor extends CommandBase {
     double r = colorDetected.red;
     double g = colorDetected.green;
     double b = colorDetected.blue;
-    String categoryDetected = categorizeColor(r, g, b);
-
-    //Category detected is the color the sensor reads, in uppercase
-
-    System.out.println(categoryDetected);
+    int categoryDetected = categorizeColor(r, g, b);
   }
 
   // Called once the command ends or is interrupted.

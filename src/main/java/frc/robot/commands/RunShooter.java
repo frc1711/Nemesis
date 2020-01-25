@@ -37,11 +37,11 @@ public class RunShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    x++;
-    if (x > 3){  
-      System.out.println("Velocity: " + shooter.getVelocity()); 
-      x = 0; 
-    }
+    // x++;
+    // if (x > 3){  
+    //   System.out.println("Velocity: " + shooter.getVelocity()); 
+    //   x = 0; 
+    // }
     
     if(stick.getRawButton(1)) { 
       shooter.toVelocity(18000);

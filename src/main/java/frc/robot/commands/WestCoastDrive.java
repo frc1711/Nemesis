@@ -17,6 +17,7 @@ public class WestCoastDrive extends CommandBase {
   private final DriveTrain driveTrain; 
   private final DoubleSupplier speed; 
   private final DoubleSupplier rot; 
+  private int x; 
 
   public WestCoastDrive(DriveTrain driveTrain, DoubleSupplier speed, DoubleSupplier rot) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -32,11 +33,17 @@ public class WestCoastDrive extends CommandBase {
   @Override
   public void initialize() {
     driveTrain.stop();
+    driveTrain.zeroEncoders();  
+    x = 0; 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // x++; 
+    // if (x > 5)
+    //   System.out.println(driveTrain.getAvgEncCount(driveTrain.getEncCount())); 
+
     driveTrain.rawWestCoast(speed.getAsDouble(), rot.getAsDouble());
   }
 
