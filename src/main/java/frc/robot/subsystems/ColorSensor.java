@@ -12,6 +12,10 @@ import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+/** 
+* @author: Gabe Seaver  
+*/
+
 public class ColorSensor extends SubsystemBase {
   
   private ColorSensorV3 colorSensor;

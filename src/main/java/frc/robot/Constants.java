@@ -31,13 +31,19 @@ public final class Constants {
 
     public static int pulley = 7;
     public static int timeToIndex = 20; //in frames where each frame is 20 milliseconds, 50 = 1 second
-    public static double pulleySpeed = 0.3;
+    public static double pulleySpeed = 0.2;
 
     //shooter PID loop Doubles
     public static double shooterkP = 0.045; 
     public static double shooterkD = shooterkP * 5; 
     public static double shooterkI = 0.00005;
     public static double shooterkF = 0.036; 
+
+    //pulley PID loop doubles
+    public static double pulleykP = 0.0; 
+    public static double pulleykD = shooterkP *5;
+    public static double pulleykI = 0.0; 
+    public static double pulleykF = 0.0; 
 
     public static enum RoboDir { 
         LEFT (-1), 

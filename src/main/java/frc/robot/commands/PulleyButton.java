@@ -9,37 +9,33 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Pulley;
-/** 
-* @author: Gabe Seaver, Lou DeZeeuw
-*/ 
-public class RunPulley extends CommandBase {
-  
-  Pulley pulleySystem;
 
-  private int time;
+public class PulleyButton extends CommandBase {
+  /**
+   * Creates a new PulleyButton.
+   */
+
+  private Pulley pulleySystem; 
   private double speed; 
 
-  public RunPulley(Pulley pulleySystem, double speed, int time) {
+  public PulleyButton(Pulley pulleySystem, double speed) {
+    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(pulleySystem);
-
-    this.pulleySystem = pulleySystem;
+    
+    this.pulleySystem = pulleySystem; 
     this.speed = speed; 
-    this.time = time; 
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    pulleySystem.run(speed);
+    pulleySystem.stop(); 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    time--;
-    if (time <= 0) {
-      pulleySystem.stop();
-    }
+    pulleySystem.toVelocity(speed); 
   }
 
   // Called once the command ends or is interrupted.

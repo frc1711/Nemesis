@@ -13,7 +13,11 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Shooter extends SubsystemBase {
+/** 
+* @author: Lou DeZeeuw, Gabe Seaver
+*/
+
+public class Shooter extends SubsystemBase implements PIDHelp {
   /**
    * Creates a new Shooter.
    */
@@ -39,39 +43,37 @@ public class Shooter extends SubsystemBase {
     shooterTalon.config_kF(0, Constants.shooterkF);
   }
 
+  //SHOOTER MOTORS
   public void forwardShoot(double speed) {
     shooterTalon.set(speed); 
   }
 
-  public void stop() {
+  public void stopShooter() {
     shooterTalon.set(ControlMode.PercentOutput, 0); 
   }
 
+  public double getDutyCycle() {
+    return shooterTalon.getMotorOutputVoltage(); 
+  }
+
   public double getRPM() {
-    double nativeUnitVelocity = shooterTalon.getSelectedSensorVelocity(); 
-    nativeUnitVelocity /= .1;
-    nativeUnitVelocity /= 4096;
-    nativeUnitVelocity *= 60; 
-    return nativeUnitVelocity; 
+    return PIDHelp.getRPM(shooterTalon); 
   }
 
   public double getVelocity() {
-    return shooterTalon.getSelectedSensorVelocity(); 
+    return PIDHelp.getVelocity(shooterTalon);  
   }
 
   public void toVelocity(double velocity) {
-    shooterTalon.set(ControlMode.Velocity, velocity); 
+    PIDHelp.toVelocity(shooterTalon, velocity);
   }
 
-  public void toRPM(double velocity) {
-    double RPM = velocity * 4096; 
-    shooterTalon.set(ControlMode.Velocity, RPM); 
+  public void toRPM(double RPM) {
+    PIDHelp.toRPM(shooterTalon, RPM); 
   }
 
-
-
-  //Fly-Wheel stuff
-  public void startFlyWheel() {
+  //FLY-WHEEL KICKER
+  public void runFlyWheel() {
     flyWheel.set(Constants.flyWheelSpeed);
   }
 

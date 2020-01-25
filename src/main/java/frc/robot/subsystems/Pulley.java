@@ -11,7 +11,11 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Pulley extends SubsystemBase {
+/** 
+* @author: Lou DeZeeuw, Gabe Seaver  
+*/
+
+public class Pulley extends SubsystemBase implements PIDHelp {
   
   WPI_TalonSRX pulleyTalon;
 
@@ -19,14 +23,37 @@ public class Pulley extends SubsystemBase {
 
   public Pulley() {
     pulleyTalon = new WPI_TalonSRX(Constants.pulley);
+
+    pulleyTalon.setSafetyEnabled(false); 
+
+    pulleyTalon.config_kP(0, Constants.pulleykP); 
+    pulleyTalon.config_kI(0, Constants.pulleykI); 
+    pulleyTalon.config_kD(0, Constants.pulleykD); 
+    pulleyTalon.config_kF(0, Constants.pulleykF); 
   }
 
-  public void startMoving() {
-    pulleyTalon.set(Constants.pulleySpeed);
+  public void run(double speed) {
+    pulleyTalon.set(speed);
   }
-
-  public void stopMoving() {
+  
+  public void stop() {
     pulleyTalon.set(0);
+  }
+  
+  public double getRPM() {
+    return PIDHelp.getRPM(pulleyTalon); 
+  }
+
+  public double getVelocity() {
+    return PIDHelp.getVelocity(pulleyTalon); 
+  }
+
+  public void toVelocity(double velocity) {
+    PIDHelp.toVelocity(pulleyTalon, velocity); 
+  }
+
+  public void toRPM(double RPM) {
+    PIDHelp.toRPM(pulleyTalon, RPM); 
   }
 
   @Override

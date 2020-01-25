@@ -21,6 +21,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.RoboDir;
 
+/** 
+* @author: Lou DeZeeuw  
+*/
 
 public class DriveTrain extends SubsystemBase {
 

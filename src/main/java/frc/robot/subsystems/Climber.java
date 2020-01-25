@@ -12,10 +12,11 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+/** 
+* @author: Lou DeZeeuw  
+*/
+
 public class Climber extends SubsystemBase {
-  /**
-   * Creates a new Climber.
-   */
   private WPI_TalonSRX climberTalon; 
   
   public Climber() {

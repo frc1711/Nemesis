@@ -12,6 +12,10 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
+/** 
+* @author: Lou DeZeeuw  
+*/
+
 public class WestCoastDrive extends CommandBase {
 
   private final DriveTrain driveTrain; 
@@ -40,10 +44,6 @@ public class WestCoastDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // x++; 
-    // if (x > 5)
-    //   System.out.println(driveTrain.getAvgEncCount(driveTrain.getEncCount())); 
-
     driveTrain.rawWestCoast(speed.getAsDouble(), rot.getAsDouble());
   }
 

@@ -11,11 +11,11 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
-public class RunShooter extends CommandBase {
-  /**
-   * Creates a new RunShooter.
-   */
+/** 
+ * @author: Lou DeZeeuw, Gabe Seaver
+*/
 
+public class RunShooter extends CommandBase {
   private final Shooter shooter;
 
   int x; 
@@ -31,28 +31,29 @@ public class RunShooter extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shooter.stop(); 
+    shooter.stopShooter(); 
+    shooter.stopFlyWheel(); 
     x = 0; 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // x++;
-    // if (x > 3){  
-    //   System.out.println("Velocity: " + shooter.getVelocity()); 
-    //   x = 0; 
-    // }
+    x++;
+    if (x > 3){  
+      System.out.println("Velocity: " + shooter.getVelocity()); 
+      x = 0; 
+    }
     
     if(stick.getRawButton(1)) { 
-      shooter.toVelocity(18000);
+      shooter.toVelocity(-24000);
     } else {
-      shooter.stop(); 
+      shooter.stopShooter(); 
     }
 
 
     if(stick.getRawButton(2)) {
-      shooter.startFlyWheel();
+      shooter.runFlyWheel();
     } else {
       shooter.stopFlyWheel();
     }
@@ -61,7 +62,8 @@ public class RunShooter extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.stop(); 
+    shooter.stopShooter(); 
+    shooter.stopFlyWheel();; 
   }
 
   // Returns true when the command should end.
