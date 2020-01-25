@@ -76,6 +76,11 @@ public class DriveTrain extends SubsystemBase {
     encArr = new CANEncoder[]{frEncoder, flEncoder, rrEncoder, rlEncoder}; 
 
     rDrive.setSafetyEnabled(false);
+
+    frEncoder.setPositionConversionFactor(42); 
+    flEncoder.setPositionConversionFactor(42); 
+    rrEncoder.setPositionConversionFactor(42); 
+    rlEncoder.setPositionConversionFactor(42); 
   }
 
   //AUTON MATH
@@ -116,16 +121,16 @@ public class DriveTrain extends SubsystemBase {
     double[] arr = new double[4]; 
     for(int i = 0; i < encArr.length; i++) {
       if ((i+1)%2 == 0)
-        arr[i] = encArr[i].getPosition() * 42; 
+        arr[i] = encArr[i].getPosition(); 
       else
-        arr[i] = -encArr[i].getPosition() * 42; 
+        arr[i] = -encArr[i].getPosition(); 
 
     }
     return arr; 
   }
 
   public double getIndividualEncCount() {
-    return flEncoder.getPosition()*42; 
+    return flEncoder.getPosition(); 
   }
 
   public double getAvgEncCount(double[] arr) {

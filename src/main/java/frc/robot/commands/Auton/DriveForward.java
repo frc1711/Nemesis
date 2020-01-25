@@ -5,17 +5,13 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-//your math is off 
-
 package frc.robot.commands.auton;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
 public class DriveForward extends CommandBase {
-  /**
-   * Creates a new DriveForward.
-   */
+  
   DriveTrain driveTrain; 
   double counts; 
   double speed; 
