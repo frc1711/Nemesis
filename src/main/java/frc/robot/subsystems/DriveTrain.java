@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.RoboDir;
+import edu.wpi.first.wpilibj.SPI;
 
 /** 
 * @author: Lou DeZeeuw  
@@ -71,7 +72,7 @@ public class DriveTrain extends SubsystemBase {
     leftDrive = new SpeedControllerGroup(frontLeftDrive, rearLeftDrive); 
 
     rDrive = new DifferentialDrive(rightDrive, leftDrive); 
-    gyro = new AHRS(Port.kUSB); 
+    gyro = new AHRS(SPI.Port.kMXP); 
 
     kWheelRadius = wheelRadius; 
     kGearRatio = gearRatio; 
@@ -179,10 +180,13 @@ public class DriveTrain extends SubsystemBase {
     rlEncoder.setPosition(0); 
   }
 
-  public void zeroGryo() {
+  public void zeroGyro() {
     gyro.zeroYaw(); 
   }
 
+  public double getYaw() {
+    return gyro.getAngle(); 
+  }
 
   @Override
   public void periodic() {

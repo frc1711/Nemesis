@@ -17,9 +17,7 @@ import frc.robot.Constants;
 
 public class Pulley extends SubsystemBase implements PIDHelp {
   
-  WPI_TalonSRX pulleyTalon;
-
-  public static final int timeToIndex = Constants.timeToIndex;
+  private WPI_TalonSRX pulleyTalon;
 
   public Pulley() {
     pulleyTalon = new WPI_TalonSRX(Constants.pulley);

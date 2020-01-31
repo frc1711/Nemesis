@@ -20,7 +20,7 @@ public class Drive extends CommandBase {
   double timeout; 
   boolean forward; 
 
-  public Drive(DriveTrain driveTrain, double inches, double speed, double seconds) {
+  public Drive(DriveTrain driveTrain, double speed, double inches, double seconds) {
     addRequirements(driveTrain); 
     
     this.driveTrain = driveTrain; 
@@ -39,6 +39,7 @@ public class Drive extends CommandBase {
   public void initialize() {
     driveTrain.stop(); 
     driveTrain.zeroEncoders(); 
+    driveTrain.zeroGyro();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

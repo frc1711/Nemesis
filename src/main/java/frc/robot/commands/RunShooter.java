@@ -46,7 +46,7 @@ public class RunShooter extends CommandBase {
     }
     
     if(stick.getRawButton(1)) { 
-      shooter.toVelocity(-24000);
+      shooter.toVelocity(-31300);
     } else {
       shooter.stopShooter(); 
     }

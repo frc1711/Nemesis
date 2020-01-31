@@ -34,16 +34,17 @@ public final class Constants {
     public static double pulleySpeed = 0.2;
 
     //shooter PID loop Doubles
-    public static double shooterkP = 0.045; 
+    public static double shooterkP = 0.04; 
     public static double shooterkD = shooterkP * 5; 
     public static double shooterkI = 0.00005;
-    public static double shooterkF = 0.036; 
+    public static double shooterkF = 0.003; 
+    //.04,.00005,.012
 
     //pulley PID loop doubles
-    public static double pulleykP = 0.0; 
+    public static double pulleykP = 0.05; 
     public static double pulleykD = shooterkP *5;
-    public static double pulleykI = 0.0; 
-    public static double pulleykF = 0.0; 
+    public static double pulleykI = 0.001; 
+    public static double pulleykF = .45; 
 
     public static enum RoboDir { 
         LEFT (-1), 

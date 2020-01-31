@@ -18,6 +18,8 @@ import frc.robot.commands.RunClimber;
 import frc.robot.commands.RunShooter;
 import frc.robot.commands.WestCoastDrive;
 import frc.robot.commands.auton.Drive;
+import frc.robot.commands.auton.TestAuton;
+import frc.robot.commands.auton.Turn;
 import frc.robot.commands.GetColor;
 import frc.robot.commands.PulleyButton;
 import frc.robot.subsystems.Climber;
@@ -35,28 +37,28 @@ import frc.robot.subsystems.ColorSensor;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  //private final DriveTrain driveTrain = new DriveTrain(24.125, 10.71);
-  private final Shooter shooter = new Shooter(); 
+  private final DriveTrain driveTrain = new DriveTrain(24.125, 10.71);
+  //private final Shooter shooter = new Shooter(); 
   //private final Climber climber = new Climber(); 
   //private final ColorSensor colorSensor = new ColorSensor();
-  private final Pulley pulley = new Pulley(); 
+  //private final Pulley pulley = new Pulley(); 
 
-  //private final Command autonomousCommand = new DriveForward(driveTrain, -11.75, .1, 100); 
+  private final Command autonomousCommand = new TestAuton(driveTrain); 
   
   public Joystick driverOne = new Joystick(0); 
   public Joystick driverTwo = new Joystick(1); 
   
   //BUTTONS
   //public JoystickButton getColorButton = new JoystickButton(driverOne, 1);
-  private JoystickButton runPulley = new JoystickButton(driverOne, 4); 
+  //private JoystickButton runPulley = new JoystickButton(driverOne, 4); 
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     //Assign default commands 
-    //driveTrain.setDefaultCommand(new WestCoastDrive(driveTrain, () -> driverOne.getRawAxis(1), () -> driverOne.getRawAxis(4))); 
-    shooter.setDefaultCommand(new RunShooter(shooter, driverOne)); 
+    driveTrain.setDefaultCommand(new WestCoastDrive(driveTrain, () -> driverOne.getRawAxis(1), () -> driverOne.getRawAxis(4))); 
+    //shooter.setDefaultCommand(new RunShooter(shooter, driverOne)); 
     //climber.setDefaultCommand(new RunClimber(climber, () -> driverTwo.getRawAxis(1)));
 
     // Configure button bindings
@@ -71,7 +73,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     //getColorButton.whenHeld(new GetColor(colorSensor));]
-    runPulley.whenHeld(new PulleyButton(pulley, .3)); 
+    //runPulley.whenHeld(new PulleyButton(pulley, .4)); 
 
   }
 
@@ -81,8 +83,8 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public void getAutonomousCommand() {
+  public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    //return autonomousCommand; 
+    return autonomousCommand; 
   }
 }

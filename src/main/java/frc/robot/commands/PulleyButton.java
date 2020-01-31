@@ -17,6 +17,7 @@ public class PulleyButton extends CommandBase {
 
   private Pulley pulleySystem; 
   private double speed; 
+  int x = 0; 
 
   public PulleyButton(Pulley pulleySystem, double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -35,7 +36,13 @@ public class PulleyButton extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    pulleySystem.toVelocity(speed); 
+    // x++;
+    // if (x > 3){  
+    //   System.out.println("Velocity: " + pulleySystem.getVelocity()); 
+    //   x = 0; 
+    // }
+    
+    pulleySystem.toVelocity(1000); 
   }
 
   // Called once the command ends or is interrupted.

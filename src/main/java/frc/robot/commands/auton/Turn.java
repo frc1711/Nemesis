@@ -5,60 +5,69 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
-
-import java.util.function.DoubleSupplier;
+package frc.robot.commands.auton;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.RoboDir;
 import frc.robot.subsystems.DriveTrain;
 
-/** 
-* @author: Lou DeZeeuw  
-*/
+public class Turn extends CommandBase {
+  /**
+   * Creates a new Turn.
+   */
 
-public class WestCoastDrive extends CommandBase {
+  private DriveTrain driveTrain; 
+  private double speed; 
+  private int angle; 
+  private boolean forwards = true; 
 
-  private final DriveTrain driveTrain; 
-  private final DoubleSupplier speed; 
-  private final DoubleSupplier rot; 
-  private int x; 
-
-  public WestCoastDrive(DriveTrain driveTrain, DoubleSupplier speed, DoubleSupplier rot) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public Turn(DriveTrain driveTrain, double speed, int angle) {
     addRequirements(driveTrain);
-
     this.driveTrain = driveTrain; 
     this.speed = speed; 
-    this.rot = rot; 
-
+    this.angle = angle; 
+    if(Math.abs(angle) == angle) 
+      forwards = false; 
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    driveTrain.stop();
-    driveTrain.zeroEncoders();  
-    x = 0; 
+    driveTrain.zeroEncoders();
+    driveTrain.zeroGyro(); 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    x++; 
-    if(x > 3) 
-      System.out.println(driveTrain.getYaw()); 
-    driveTrain.rawWestCoast(speed.getAsDouble(), rot.getAsDouble());
+    if(forwards) {
+      if(angle - driveTrain.getYaw() > 15) {
+        driveTrain.drive(speed, RoboDir.RIGHT); 
+      } else {
+        driveTrain.drive(speed * .5, RoboDir.RIGHT); 
+      }
+    } else {
+      if(angle - driveTrain.getYaw() < -15) {
+        driveTrain.drive(speed, RoboDir.LEFT); 
+      } else {
+        driveTrain.drive(speed * .5, RoboDir.LEFT); 
+      }
+    }
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    driveTrain.zeroEncoders();
     driveTrain.stop(); 
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if (Math.abs(angle) - Math.abs(driveTrain.getYaw()) < 2)
+      return true; 
     return false;
   }
 }
