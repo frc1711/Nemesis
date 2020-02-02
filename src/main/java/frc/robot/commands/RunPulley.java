@@ -7,39 +7,82 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.helper_classes.Ball;
+import frc.robot.helper_classes.BallHandler;
 import frc.robot.subsystems.Pulley;
-/** 
-* @author: Gabriel Seaver, Lou DeZeeuw
-*/ 
+
 public class RunPulley extends CommandBase {
-  
-  Pulley pulleySystem;
+  /**
+   * Creates a new PulleyButton.
+   */
 
-  private int time;
+  private Pulley pulleySystem; 
+  private BallHandler ballHandler; 
   private double speed; 
+  private boolean secondToggle; 
+  private boolean created; 
+  int x = 0; 
 
-  public RunPulley(Pulley pulleySystem, double speed, int time) {
+  public RunPulley(Pulley pulleySystem, double speed) {
+    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(pulleySystem);
-
-    this.pulleySystem = pulleySystem;
+    
+    this.pulleySystem = pulleySystem; 
     this.speed = speed; 
-    this.time = time; 
+    ballHandler = new BallHandler(); 
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    pulleySystem.run(speed);
+    pulleySystem.stop(); 
+    created = false; 
+    secondToggle = false; 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    time--;
-    if (time <= 0) {
-      pulleySystem.stop();
+    x++;
+    if (x > 3){  
+      System.out.println("SENSOR: " + pulleySystem.getMiddleSensor()); 
+      x = 0; 
     }
+
+
+    //automated ball system
+    if (pulleySystem.getBottomSensor() && !created) {
+      ballHandler.addBall(new Ball());
+      created = true; 
+    }
+
+    Ball lastBall = ballHandler.getLastBallHandled(); 
+    System.out.println(Ball.getTotBall()); 
+
+    if(pulleySystem.getMiddleSensor() && !secondToggle) {
+      lastBall.setPastSensor(true); 
+      secondToggle = true; 
+    } 
+    if (!pulleySystem.getMiddleSensor()) {
+      secondToggle = false; 
+    }
+
+    if(ballHandler.numBallsInRobot() == 1) {
+      if(!lastBall.getPastSensor()) {
+        pulleySystem.run(.50); 
+      } else {
+        pulleySystem.stop(); 
+        created = false; 
+      }
+    } else if (ballHandler.numBallsInRobot() > 1 && ballHandler.getSecondToLastBallHandled().getPastSensor() && !lastBall.getPastSensor()) {
+      pulleySystem.run(.50); 
+    } else {
+      pulleySystem.stop(); 
+      created = false; 
+    }
+    
   }
 
   // Called once the command ends or is interrupted.

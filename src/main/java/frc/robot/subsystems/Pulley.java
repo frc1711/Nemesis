@@ -8,8 +8,11 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.helper_classes.PIDHelp;
 
 /** 
 * @author: Lou DeZeeuw, Gabriel Seaver  
@@ -18,6 +21,10 @@ import frc.robot.Constants;
 public class Pulley extends SubsystemBase implements PIDHelp {
   
   private WPI_TalonSRX pulleyTalon;
+
+  private DigitalInput bottomSensor; 
+  private DigitalInput middleSensor; 
+  private DigitalInput topSensor; 
 
   public Pulley() {
     pulleyTalon = new WPI_TalonSRX(Constants.pulley);
@@ -28,6 +35,10 @@ public class Pulley extends SubsystemBase implements PIDHelp {
     pulleyTalon.config_kI(0, Constants.pulleykI); 
     pulleyTalon.config_kD(0, Constants.pulleykD); 
     pulleyTalon.config_kF(0, Constants.pulleykF); 
+
+    bottomSensor = new DigitalInput(Constants.bottomSensor); 
+    middleSensor = new DigitalInput(Constants.middleSensor); 
+    topSensor = new DigitalInput(Constants.topSensor); 
   }
 
   public void run(double speed) {
@@ -52,6 +63,18 @@ public class Pulley extends SubsystemBase implements PIDHelp {
 
   public void toRPM(double RPM) {
     PIDHelp.toRPM(pulleyTalon, RPM); 
+  }
+
+  public boolean getBottomSensor() {
+    return !bottomSensor.get(); 
+  }
+  
+  public boolean getMiddleSensor() {
+    return !middleSensor.get(); 
+  }
+
+  public boolean getTopSensor() {
+    return !topSensor.get(); 
   }
 
   @Override

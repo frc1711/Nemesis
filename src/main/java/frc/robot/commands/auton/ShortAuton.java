@@ -9,6 +9,7 @@ package frc.robot.commands.auton;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Shooter;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -17,7 +18,7 @@ public class ShortAuton extends SequentialCommandGroup {
   /**
    * Creates a new ShortAuton.
    */
-  public ShortAuton(DriveTrain driveTrain) {
+  public ShortAuton(DriveTrain driveTrain, Shooter shooter) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super(
@@ -26,7 +27,7 @@ public class ShortAuton extends SequentialCommandGroup {
       new Drive(driveTrain, 0.1, -95.2, 100),
       new Turn(driveTrain, 0.3, -45),
       new Drive(driveTrain, 0.1, 15, 100),
-      new ShootAuton(driveTrain)
+      new Shoot(shooter)
     );
   }
 }

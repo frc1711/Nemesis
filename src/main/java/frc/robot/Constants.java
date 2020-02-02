@@ -46,6 +46,13 @@ public final class Constants {
     public static double pulleykI = 0.001; 
     public static double pulleykF = .45; 
 
+
+    //DIO Ports
+    public static int bottomSensor = 0; 
+    public static int middleSensor = 1; 
+    public static int topSensor = 2; 
+
+    //enums
     public static enum RoboDir { 
         LEFT (-1), 
         RIGHT (1), 

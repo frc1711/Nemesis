@@ -15,13 +15,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.RunClimber;
+import frc.robot.commands.RunPulley;
 import frc.robot.commands.RunShooter;
 import frc.robot.commands.WestCoastDrive;
 import frc.robot.commands.auton.Drive;
 import frc.robot.commands.auton.TestAuton;
 import frc.robot.commands.auton.Turn;
 import frc.robot.commands.GetColor;
-import frc.robot.commands.PulleyButton;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Pulley;
@@ -37,13 +37,13 @@ import frc.robot.subsystems.ColorSensor;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  private final DriveTrain driveTrain = new DriveTrain(24.125, 10.71);
+  //private final DriveTrain driveTrain = new DriveTrain(24.125, 10.71);
   //private final Shooter shooter = new Shooter(); 
   //private final Climber climber = new Climber(); 
   //private final ColorSensor colorSensor = new ColorSensor();
-  //private final Pulley pulley = new Pulley(); 
+  private final Pulley pulley = new Pulley(); 
 
-  private final Command autonomousCommand = new TestAuton(driveTrain); 
+  //private final Command autonomousCommand = new TestAuton(driveTrain); 
   
   public Joystick driverOne = new Joystick(0); 
   public Joystick driverTwo = new Joystick(1); 
@@ -57,10 +57,10 @@ public class RobotContainer {
    */
   public RobotContainer() {
     //Assign default commands 
-    driveTrain.setDefaultCommand(new WestCoastDrive(driveTrain, () -> driverOne.getRawAxis(1), () -> driverOne.getRawAxis(4))); 
+    //driveTrain.setDefaultCommand(new WestCoastDrive(driveTrain, () -> driverOne.getRawAxis(1), () -> driverOne.getRawAxis(4))); 
     //shooter.setDefaultCommand(new RunShooter(shooter, driverOne)); 
     //climber.setDefaultCommand(new RunClimber(climber, () -> driverTwo.getRawAxis(1)));
-
+    pulley.setDefaultCommand(new RunPulley(pulley, .4)); 
     // Configure button bindings
     configureButtonBindings();
   }
@@ -83,8 +83,8 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+  public void getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return autonomousCommand; 
+    //return autonomousCommand; 
   }
 }
