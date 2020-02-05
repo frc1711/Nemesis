@@ -38,7 +38,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   //private final DriveTrain driveTrain = new DriveTrain(24.125, 10.71);
-  //private final Shooter shooter = new Shooter(); 
+  private final Shooter shooter = new Shooter(); 
   //private final Climber climber = new Climber(); 
   //private final ColorSensor colorSensor = new ColorSensor();
   private final Pulley pulley = new Pulley(); 
@@ -58,9 +58,9 @@ public class RobotContainer {
   public RobotContainer() {
     //Assign default commands 
     //driveTrain.setDefaultCommand(new WestCoastDrive(driveTrain, () -> driverOne.getRawAxis(1), () -> driverOne.getRawAxis(4))); 
-    //shooter.setDefaultCommand(new RunShooter(shooter, driverOne)); 
     //climber.setDefaultCommand(new RunClimber(climber, () -> driverTwo.getRawAxis(1)));
-    pulley.setDefaultCommand(new RunPulley(pulley, .4)); 
+    pulley.setDefaultCommand(new RunPulley(pulley, .4, shooter, driverOne)); 
+    
     // Configure button bindings
     configureButtonBindings();
   }

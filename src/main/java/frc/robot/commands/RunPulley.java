@@ -8,10 +8,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.helper_classes.Ball;
 import frc.robot.helper_classes.BallHandler;
 import frc.robot.subsystems.Pulley;
+import frc.robot.subsystems.Shooter;
 
 public class RunPulley extends CommandBase {
   /**
@@ -19,18 +21,31 @@ public class RunPulley extends CommandBase {
    */
 
   private Pulley pulleySystem; 
+  private Shooter shooter; 
   private BallHandler ballHandler; 
+  private Joystick stick; 
   private double speed; 
   private boolean secondToggle; 
+  private boolean shootMode; 
   private boolean created; 
+  private boolean hold; 
+  private boolean destroyed; 
   int x = 0; 
 
-  public RunPulley(Pulley pulleySystem, double speed) {
+  public RunPulley(Pulley pulleySystem, double speed, Shooter shooter, Joystick stick) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(pulleySystem);
     
     this.pulleySystem = pulleySystem; 
+    this.shooter = shooter; 
     this.speed = speed; 
+    this.stick = stick; 
+    hold = false; 
+    shootMode = false; 
+    destroyed = false; 
+    created = false; 
+    secondToggle = false; 
+
     ballHandler = new BallHandler(); 
   }
 
@@ -38,8 +53,8 @@ public class RunPulley extends CommandBase {
   @Override
   public void initialize() {
     pulleySystem.stop(); 
-    created = false; 
-    secondToggle = false; 
+    shooter.stopShooter(); 
+    shooter.stopFlyWheel(); 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -47,7 +62,7 @@ public class RunPulley extends CommandBase {
   public void execute() {
     x++;
     if (x > 3){  
-      System.out.println("SENSOR: " + pulleySystem.getMiddleSensor()); 
+      System.out.println("BALLS: " + ballHandler.numBallsInRobot());  
       x = 0; 
     }
 
@@ -59,7 +74,6 @@ public class RunPulley extends CommandBase {
     }
 
     Ball lastBall = ballHandler.getLastBallHandled(); 
-    System.out.println(Ball.getTotBall()); 
 
     if(pulleySystem.getMiddleSensor() && !secondToggle) {
       lastBall.setPastSensor(true); 
@@ -82,6 +96,46 @@ public class RunPulley extends CommandBase {
       pulleySystem.stop(); 
       created = false; 
     }
+
+    //automated shooting system
+    if(stick.getRawButtonReleased(1)){
+      hold = !hold;
+      shootMode = !shootMode;  
+      }
+
+      if(hold) { 
+        shooter.toVelocity(-31300);
+        shootMode = true; 
+      } else {
+        shooter.stopShooter(); 
+      }
+  
+      if(shootMode && !shooter.getTopSensor()) {
+        pulleySystem.run(.50); 
+      }
+  
+      if(shooter.getTopSensor()){
+        pulleySystem.stop(); 
+      } 
+
+      if (shooter.getTopSensor() && !destroyed) {
+        ballHandler.removeHighestBall(); 
+        destroyed = true; 
+      }
+
+      if(!shooter.getTopSensor()) {
+        destroyed = false; 
+      }
+
+      if(stick.getRawButton(3)) {
+          ballHandler.removeHighestBall(); 
+      }
+
+      if(stick.getRawButton(2) && shootMode) {
+        shooter.runFlyWheel();
+      } else {
+        shooter.stopFlyWheel();
+      }
     
   }
 

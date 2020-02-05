@@ -24,7 +24,6 @@ public class Pulley extends SubsystemBase implements PIDHelp {
 
   private DigitalInput bottomSensor; 
   private DigitalInput middleSensor; 
-  private DigitalInput topSensor; 
 
   public Pulley() {
     pulleyTalon = new WPI_TalonSRX(Constants.pulley);
@@ -38,7 +37,6 @@ public class Pulley extends SubsystemBase implements PIDHelp {
 
     bottomSensor = new DigitalInput(Constants.bottomSensor); 
     middleSensor = new DigitalInput(Constants.middleSensor); 
-    topSensor = new DigitalInput(Constants.topSensor); 
   }
 
   public void run(double speed) {
@@ -71,10 +69,6 @@ public class Pulley extends SubsystemBase implements PIDHelp {
   
   public boolean getMiddleSensor() {
     return !middleSensor.get(); 
-  }
-
-  public boolean getTopSensor() {
-    return !topSensor.get(); 
   }
 
   @Override

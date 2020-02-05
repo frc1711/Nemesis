@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.helper_classes.PIDHelp;
@@ -27,6 +28,7 @@ public class Shooter extends SubsystemBase implements PIDHelp {
 
   private WPI_TalonSRX flyWheel;
 
+  private DigitalInput topSensor; 
   
 
   public Shooter() {
@@ -34,6 +36,8 @@ public class Shooter extends SubsystemBase implements PIDHelp {
     altShooterTalon = new WPI_TalonSRX(Constants.shooterTwo); 
     flyWheel = new WPI_TalonSRX(Constants.flyWheel);
   
+    topSensor = new DigitalInput(2); 
+
     shooterTalon.setSafetyEnabled(false); 
     altShooterTalon.setSafetyEnabled(false); 
     altShooterTalon.set(ControlMode.Follower, Constants.shooter);
@@ -82,7 +86,9 @@ public class Shooter extends SubsystemBase implements PIDHelp {
     flyWheel.set(0);
   }
 
-
+  public boolean getTopSensor() {
+    return !topSensor.get(); 
+  }
 
   @Override
   public void periodic() {

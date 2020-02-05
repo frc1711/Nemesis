@@ -32,7 +32,8 @@ public class BallHandler {
     }
 
     public void removeHighestBall() {
-
+        if (ballList.size() != 0)
+            ballList.remove(ballList.size() -1); 
     }
 
     public int numBallsInRobot() {

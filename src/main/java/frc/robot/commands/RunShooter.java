@@ -19,6 +19,7 @@ public class RunShooter extends CommandBase {
   private final Shooter shooter;
 
   int x; 
+  boolean hold; 
 
   private final Joystick stick; 
 
@@ -26,6 +27,7 @@ public class RunShooter extends CommandBase {
     addRequirements(shooter);
     this.stick = stick; 
     this.shooter = shooter; 
+    hold = false; 
   }
 
   // Called when the command is initially scheduled.
@@ -43,16 +45,19 @@ public class RunShooter extends CommandBase {
     if (x > 3){  
       System.out.println("Velocity: " + shooter.getVelocity()); 
       x = 0; 
-    }
+    } 
+
+    if(stick.getRawButtonReleased(1)) 
+      hold = !hold; 
     
-    if(stick.getRawButton(1)) { 
+    if(hold) { 
       shooter.toVelocity(-31300);
     } else {
       shooter.stopShooter(); 
     }
 
 
-    if(stick.getRawButton(2)) {
+    if(stick.getRawButton(2) && shooter.getTopSensor()) {
       shooter.runFlyWheel();
     } else {
       shooter.stopFlyWheel();
@@ -63,7 +68,7 @@ public class RunShooter extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     shooter.stopShooter(); 
-    shooter.stopFlyWheel();; 
+    shooter.stopFlyWheel();
   }
 
   // Returns true when the command should end.
