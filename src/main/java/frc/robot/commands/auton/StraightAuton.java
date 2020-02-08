@@ -9,6 +9,7 @@ package frc.robot.commands.auton;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Pulley;
 import frc.robot.subsystems.Shooter;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -18,12 +19,12 @@ public class StraightAuton extends SequentialCommandGroup {
   /**
    * Creates a new StraightAuton.
    */
-  public StraightAuton(DriveTrain driveTrain, Shooter shooter) {
+  public StraightAuton(DriveTrain driveTrain, Shooter shooter, Pulley pulley) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super(
       new Drive(driveTrain, 0.1, -70.2, 100),
-      new Shoot(shooter)
+      new Shoot(shooter, pulley)
     );
   }
 }

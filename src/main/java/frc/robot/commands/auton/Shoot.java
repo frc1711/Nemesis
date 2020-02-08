@@ -7,21 +7,38 @@
 
 package frc.robot.commands.auton;
 
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.subsystems.DriveTrain;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Pulley;
 import frc.robot.subsystems.Shooter;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class Shoot extends SequentialCommandGroup {
-  /**
-   * Creates a new Shoot. 
-   */
-  public Shoot(Shooter shooter) {
-    // Add your commands in the super() call, e.g.
-    // super(new FooCommand(), new BarCommand());
-    super();
-    //TODO: @lou
+public class Shoot extends CommandBase {
+  
+  private Shooter shooter; 
+  private Pulley pulley; 
+
+  public Shoot(Shooter shooter, Pulley pulley) {
+    this.shooter = shooter; 
+    this.pulley = pulley; 
+  }
+
+  @Override
+  public void initialize() {
+    shooter.stopFlyWheel();
+    shooter.stopShooter();
+  }
+
+  @Override
+  public void execute() {
+    shooter.toVelocity(-31300);
+
+    if(shooter.getVelocity() < -3100 && shooter.getVelocity() > -31700 && shooter.getTopSensor()) {
+      shooter.runFlyWheel(); 
+    } else {
+      shooter.stopFlyWheel(); 
+    }
+
+    if(!shooter.getTopSensor()) {
+      pulley.run(.5); 
+    }
   }
 }

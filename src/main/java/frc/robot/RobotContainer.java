@@ -59,7 +59,7 @@ public class RobotContainer {
     //Assign default commands 
     //driveTrain.setDefaultCommand(new WestCoastDrive(driveTrain, () -> driverOne.getRawAxis(1), () -> driverOne.getRawAxis(4))); 
     //climber.setDefaultCommand(new RunClimber(climber, () -> driverTwo.getRawAxis(1)));
-    pulley.setDefaultCommand(new RunPulley(pulley, .4, shooter, driverOne)); 
+    pulley.setDefaultCommand(new RunPulley(pulley, shooter, driverOne)); 
     
     // Configure button bindings
     configureButtonBindings();

@@ -7,7 +7,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.helper_classes.Ball;
@@ -20,11 +19,10 @@ public class RunPulley extends CommandBase {
    * Creates a new PulleyButton.
    */
 
-  private Pulley pulleySystem; 
+  private Pulley pulley; 
   private Shooter shooter; 
   private BallHandler ballHandler; 
   private Joystick stick; 
-  private double speed; 
   private boolean secondToggle; 
   private boolean shootMode; 
   private boolean created; 
@@ -32,13 +30,12 @@ public class RunPulley extends CommandBase {
   private boolean destroyed; 
   int x = 0; 
 
-  public RunPulley(Pulley pulleySystem, double speed, Shooter shooter, Joystick stick) {
+  public RunPulley(Pulley pulley, Shooter shooter, Joystick stick) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(pulleySystem);
+    addRequirements(pulley, shooter);
     
-    this.pulleySystem = pulleySystem; 
+    this.pulley = pulley; 
     this.shooter = shooter; 
-    this.speed = speed; 
     this.stick = stick; 
     hold = false; 
     shootMode = false; 
@@ -52,7 +49,7 @@ public class RunPulley extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    pulleySystem.stop(); 
+    pulley.stop(); 
     shooter.stopShooter(); 
     shooter.stopFlyWheel(); 
   }
@@ -68,39 +65,40 @@ public class RunPulley extends CommandBase {
 
 
     //automated ball system
-    if (pulleySystem.getBottomSensor() && !created) {
+    if (pulley.getBottomSensor() && !created) {
       ballHandler.addBall(new Ball());
       created = true; 
     }
 
     Ball lastBall = ballHandler.getLastBallHandled(); 
 
-    if(pulleySystem.getMiddleSensor() && !secondToggle) {
-      lastBall.setPastSensor(true); 
-      secondToggle = true; 
-    } 
-    if (!pulleySystem.getMiddleSensor()) {
+    if(pulley.getMiddleSensor()) {
+      if(!secondToggle) {
+        lastBall.setPastSensor(true); 
+        secondToggle = true; 
+      }
+    } else {
       secondToggle = false; 
     }
 
     if(ballHandler.numBallsInRobot() == 1) {
       if(!lastBall.getPastSensor()) {
-        pulleySystem.run(.50); 
+        pulley.run(.50); 
       } else {
-        pulleySystem.stop(); 
+        pulley.stop(); 
         created = false; 
       }
     } else if (ballHandler.numBallsInRobot() > 1 && ballHandler.getSecondToLastBallHandled().getPastSensor() && !lastBall.getPastSensor()) {
-      pulleySystem.run(.50); 
+      pulley.run(.50); 
     } else {
-      pulleySystem.stop(); 
+      pulley.stop(); 
       created = false; 
     }
 
     //automated shooting system
-    if(stick.getRawButtonReleased(1)){
-      hold = !hold;
-      shootMode = !shootMode;  
+      if(stick.getRawButtonReleased(1)){
+        hold = !hold;
+        shootMode = !shootMode;  
       }
 
       if(hold) { 
@@ -110,22 +108,20 @@ public class RunPulley extends CommandBase {
         shooter.stopShooter(); 
       }
   
-      if(shootMode && !shooter.getTopSensor()) {
-        pulleySystem.run(.50); 
-      }
-  
-      if(shooter.getTopSensor()){
-        pulleySystem.stop(); 
-      } 
-
-      if (shooter.getTopSensor() && !destroyed) {
-        ballHandler.removeHighestBall(); 
-        destroyed = true; 
-      }
-
       if(!shooter.getTopSensor()) {
         destroyed = false; 
+        if(shootMode) {
+          pulley.run(.5); 
+        }
       }
+
+      if(shooter.getTopSensor()){
+        pulley.stop(); 
+        if(!destroyed) {
+            ballHandler.removeHighestBall(); 
+            destroyed = true; 
+        }
+      } 
 
       if(stick.getRawButton(3)) {
           ballHandler.removeHighestBall(); 
@@ -142,7 +138,7 @@ public class RunPulley extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    pulleySystem.stop(); 
+    pulley.stop(); 
   }
 
   // Returns true when the command should end.
