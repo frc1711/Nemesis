@@ -16,10 +16,12 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static int frd = 2; 
-    public static int fld = 3; 
+
+    //TALONS
+    public static int frd = 4; 
+    public static int fld = 2; 
     public static int rrd = 1; 
-    public static int rld = 4; 
+    public static int rld = 3; 
 
     public static int shooter = 0; 
     public static int shooterTwo = 5; 
@@ -30,14 +32,18 @@ public final class Constants {
     public static int climber = 6; 
 
     public static int pulley = 7;
-    public static int timeToIndex = 20; //in frames where each frame is 20 milliseconds, 50 = 1 second
-    public static double pulleySpeed = 0.2;
+
+    public static int intake = 9;  
+
+    public static int colorWheel = 10;
+
+    public static int winch = 11;
 
     //shooter PID loop Doubles
-    public static double shooterkP = 0.04; 
+    public static double shooterkP = 0.00; 
     public static double shooterkD = shooterkP * 5; 
-    public static double shooterkI = 0.00005;
-    public static double shooterkF = 0.003; 
+    public static double shooterkI = 0.00000;
+    public static double shooterkF = 0.01; 
     //.04,.00005,.012
 
     //pulley PID loop doubles

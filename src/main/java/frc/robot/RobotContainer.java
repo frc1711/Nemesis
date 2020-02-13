@@ -15,8 +15,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.RunClimber;
+import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunPulley;
+import frc.robot.commands.RunPulleyButton;
 import frc.robot.commands.RunShooter;
+import frc.robot.commands.RunWinch;
 import frc.robot.commands.WestCoastDrive;
 import frc.robot.commands.auton.Drive;
 import frc.robot.commands.auton.TestAuton;
@@ -24,8 +27,10 @@ import frc.robot.commands.auton.Turn;
 import frc.robot.commands.GetColor;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pulley;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Winch;
 import frc.robot.subsystems.ColorSensor;
 
 /**
@@ -37,30 +42,32 @@ import frc.robot.subsystems.ColorSensor;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  //private final DriveTrain driveTrain = new DriveTrain(24.125, 10.71);
+  private final DriveTrain driveTrain = new DriveTrain(24.125, 10.71);
   private final Shooter shooter = new Shooter(); 
-  //private final Climber climber = new Climber(); 
+  private final Climber climber = new Climber(); 
+  private final Winch winch = new Winch(); 
   //private final ColorSensor colorSensor = new ColorSensor();
   private final Pulley pulley = new Pulley(); 
-
+  private final Intake intake = new Intake(); 
   //private final Command autonomousCommand = new TestAuton(driveTrain); 
   
   public Joystick driverOne = new Joystick(0); 
   public Joystick driverTwo = new Joystick(1); 
   
   //BUTTONS
-  //public JoystickButton getColorButton = new JoystickButton(driverOne, 1);
-  //private JoystickButton runPulley = new JoystickButton(driverOne, 4); 
-
+  //private JoystickButton getColorButton = new JoystickButton(driverOne, 1);
+  private JoystickButton intakeButton = new JoystickButton(driverTwo, 5);
+  private JoystickButton outtakeButton = new JoystickButton(driverTwo, 6);
+  //private JoystickButton pulleyButton = new JoystickButton(driverTwo, 1); 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     //Assign default commands 
-    //driveTrain.setDefaultCommand(new WestCoastDrive(driveTrain, () -> driverOne.getRawAxis(1), () -> driverOne.getRawAxis(4))); 
-    //climber.setDefaultCommand(new RunClimber(climber, () -> driverTwo.getRawAxis(1)));
-    pulley.setDefaultCommand(new RunPulley(pulley, shooter, driverOne)); 
-    
+    driveTrain.setDefaultCommand(new WestCoastDrive(driveTrain, () -> driverOne.getRawAxis(1), () -> driverOne.getRawAxis(4))); 
+    climber.setDefaultCommand(new RunClimber(climber, () -> driverTwo.getRawAxis(1)));
+    pulley.setDefaultCommand(new RunPulley(pulley, shooter, driverTwo)); 
+    winch.setDefaultCommand(new RunWinch(winch, () -> driverTwo.getRawAxis(5)));
     // Configure button bindings
     configureButtonBindings();
   }
@@ -73,8 +80,9 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     //getColorButton.whenHeld(new GetColor(colorSensor));]
-    //runPulley.whenHeld(new PulleyButton(pulley, .4)); 
-
+    intakeButton.whenHeld(new RunIntake(intake, .4)); 
+    outtakeButton.whenHeld(new RunIntake(intake, -.4)); 
+    //pulleyButton.whenHeld(new RunPulleyButton(pulley)); 
   }
 
 

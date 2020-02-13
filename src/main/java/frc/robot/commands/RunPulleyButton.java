@@ -7,69 +7,40 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Pulley;
 
-/** 
- * @author: Lou DeZeeuw, Gabriel Seaver
-*/
+public class RunPulleyButton extends CommandBase {
+  /**
+   * Creates a new RunPulleyButton.
+   */
+  Pulley pulley; 
 
-public class RunShooter extends CommandBase {
-  private final Shooter shooter;
-
-  private int x; 
-  private boolean hold; 
-
-  private final Joystick stick; 
-
-  public RunShooter(Shooter shooter, Joystick stick) {
-    addRequirements(shooter);
-    this.stick = stick; 
-    this.shooter = shooter; 
-    hold = false; 
+  public RunPulleyButton(Pulley pulley) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(pulley); 
+    this.pulley = pulley; 
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shooter.stopShooter(); 
-    shooter.stopFlyWheel(); 
-    x = 0; 
   }
 
+
+
+
+  
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    x++;
-    if (x > 3){  
-      System.out.println("Velocity: " + shooter.getVelocity()); 
-      x = 0; 
-    } 
-
-    if(stick.getRawButtonReleased(1)) 
-      hold = !hold; 
-
-    
-    if(hold) { 
-      shooter.toVelocity(-31300);
-    } else {
-      shooter.stopShooter(); 
-    }
-
-
-    if(stick.getRawButton(2) && shooter.getTopSensor()) {
-      shooter.runFlyWheel();
-    } else {
-      shooter.stopFlyWheel();
-    }
+    pulley.run(.5); 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.stopShooter(); 
-    shooter.stopFlyWheel();
+    pulley.stop(); 
   }
 
   // Returns true when the command should end.

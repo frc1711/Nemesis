@@ -12,24 +12,22 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-/** 
-* @author: Lou DeZeeuw  
-*/
+public class Intake extends SubsystemBase {
+  private WPI_TalonSRX intakeTalon; 
 
-public class Climber extends SubsystemBase {
-  private WPI_TalonSRX climberTalon; 
-  
-  public Climber() {
-    climberTalon = new WPI_TalonSRX(Constants.climber); 
+  public Intake() {
+    intakeTalon = new WPI_TalonSRX(Constants.intake); 
   }
 
-  public void set(double speed) {
-    climberTalon.set(speed * .4); 
-  }
-  
   public void stop() {
-    climberTalon.set(0); 
+    intakeTalon.set(0); 
   }
+
+  public void run(double speed) {
+    intakeTalon.set(speed); 
+  }
+
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

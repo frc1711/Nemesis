@@ -23,11 +23,15 @@ public class RunPulley extends CommandBase {
   private Shooter shooter; 
   private BallHandler ballHandler; 
   private Joystick stick; 
+
   private boolean secondToggle; 
   private boolean shootMode; 
   private boolean created; 
   private boolean hold; 
+  private boolean reverse; 
   private boolean destroyed; 
+  private boolean manual; 
+  
   int x = 0; 
 
   public RunPulley(Pulley pulley, Shooter shooter, Joystick stick) {
@@ -42,6 +46,8 @@ public class RunPulley extends CommandBase {
     destroyed = false; 
     created = false; 
     secondToggle = false; 
+    reverse = false; 
+    manual = false; 
 
     ballHandler = new BallHandler(); 
   }
@@ -63,76 +69,117 @@ public class RunPulley extends CommandBase {
       x = 0; 
     }
 
+    if(stick.getRawButtonReleased(4))
+      reverse = !reverse; 
 
-    //automated ball system
-    if (pulley.getBottomSensor() && !created) {
-      ballHandler.addBall(new Ball());
-      created = true; 
-    }
-
-    Ball lastBall = ballHandler.getLastBallHandled(); 
-
-    if(pulley.getMiddleSensor()) {
-      if(!secondToggle) {
-        lastBall.setPastSensor(true); 
-        secondToggle = true; 
-      }
-    } else {
-      secondToggle = false; 
-    }
-
-    if(ballHandler.numBallsInRobot() == 1) {
-      if(!lastBall.getPastSensor()) {
-        pulley.run(.50); 
-      } else {
-        pulley.stop(); 
-        created = false; 
-      }
-    } else if (ballHandler.numBallsInRobot() > 1 && ballHandler.getSecondToLastBallHandled().getPastSensor() && !lastBall.getPastSensor()) {
-      pulley.run(.50); 
-    } else {
-      pulley.stop(); 
-      created = false; 
-    }
-
-    //automated shooting system
-      if(stick.getRawButtonReleased(1)){
-        hold = !hold;
-        shootMode = !shootMode;  
-      }
-
-      if(hold) { 
-        shooter.toVelocity(-31300);
-        shootMode = true; 
-      } else {
-        shooter.stopShooter(); 
-      }
-  
-      if(!shooter.getTopSensor()) {
-        destroyed = false; 
-        if(shootMode) {
-          pulley.run(.5); 
+    if(stick.getRawButtonReleased(8)) 
+      manual = !manual; 
+    
+    if(!manual) {
+      if(!reverse){
+        //automated ball system
+        if (pulley.getBottomSensor() && !created) {
+          ballHandler.addBall(new Ball());
+          created = true; 
         }
-      }
 
-      if(shooter.getTopSensor()){
-        pulley.stop(); 
-        if(!destroyed) {
-            ballHandler.removeHighestBall(); 
-            destroyed = true; 
+        Ball lastBall = ballHandler.getLastBallHandled(); 
+
+        if(pulley.getMiddleSensor()) {
+          if(!secondToggle && ballHandler.numBallsInRobot() > 0) {
+            lastBall.setPastSensor(true); 
+            secondToggle = true; 
+          }
+        } else {
+          secondToggle = false; 
         }
-      } 
 
-      if(stick.getRawButton(3)) {
+        if(ballHandler.numBallsInRobot() == 1) {
+          if(!lastBall.getPastSensor()) {
+            pulley.run(.25); 
+          } else {
+            pulley.stop(); 
+            created = false; 
+          }
+        } else if (ballHandler.numBallsInRobot() > 1 && ballHandler.getSecondToLastBallHandled().getPastSensor() && !lastBall.getPastSensor()) {
+          pulley.run(.25); 
+        } else {
+          pulley.stop(); 
+          created = false; 
+        }
+
+        //automated shooting system
+          if(stick.getRawButtonReleased(1)){
+            hold = !hold;
+            shootMode = !shootMode;  
+          }
+
+          if(hold) { 
+            shooter.toVelocity(-31300);
+            shootMode = true; 
+          } else {
+            shooter.stopShooter(); 
+          }
+      
+          if(!shooter.getTopSensor()) {
+            destroyed = false; 
+            if(shootMode) {
+              pulley.run(.25); 
+            }
+          }
+
+          if(shooter.getTopSensor()){
+            pulley.stop(); 
+            if(!destroyed) {
+                ballHandler.removeHighestBall(); 
+                destroyed = true; 
+            }
+          } 
+
+          if(stick.getRawButton(3)) {
+              ballHandler.removeHighestBall(); 
+          }
+
+          if(stick.getRawButton(2) && shootMode) {
+            shooter.runFlyWheel();
+          } else {
+            shooter.stopFlyWheel();
+          }
+      } else {
+        pulley.run(-.25); 
+
+        if(pulley.getBottomSensor() && !destroyed) {
           ballHandler.removeHighestBall(); 
+          destroyed = true; 
+        }
+
+        if(!pulley.getBottomSensor()) {
+            destroyed = false; 
+        }
+      }
+    } else {
+      if (x > 3)
+        System.out.println("WARNING: MANUAL MODE."); 
+      if(stick.getRawButton(4)) {
+        pulley.run(-.25); 
+      } else if(stick.getRawButton(3)) {
+        pulley.run(.25); 
+      } else {
+        pulley.run(0); 
       }
 
-      if(stick.getRawButton(2) && shootMode) {
-        shooter.runFlyWheel();
+      if(stick.getRawButton(1)){
+        shooter.toVelocity(-31300);
+      } else {
+        shooter.toVelocity(0); 
+      }
+
+      if(stick.getRawButton(2)) {
+        shooter.runFlyWheel(); 
       } else {
         shooter.stopFlyWheel();
       }
-    
+    }
   }
 
   // Called once the command ends or is interrupted.
