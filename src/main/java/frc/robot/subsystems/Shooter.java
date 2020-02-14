@@ -40,6 +40,7 @@ public class Shooter extends SubsystemBase implements PIDHelp {
 
     shooterTalon.setSafetyEnabled(false); 
     altShooterTalon.setSafetyEnabled(false); 
+    altShooterTalon.setInverted(true);
     altShooterTalon.set(ControlMode.Follower, Constants.shooter);
     
     shooterTalon.config_kP(0, Constants.shooterkP); 

@@ -27,7 +27,7 @@ public final class Constants {
     public static int shooterTwo = 5; 
 
     public static int flyWheel = 8;
-    public static double flyWheelSpeed = 0.5;
+    public static double flyWheelSpeed = 0.75;
 
     public static int climber = 6; 
 
@@ -43,13 +43,13 @@ public final class Constants {
     public static double shooterkP = 0.00; 
     public static double shooterkD = shooterkP * 5; 
     public static double shooterkI = 0.00000;
-    public static double shooterkF = 0.01; 
+    public static double shooterkF = 0.1; 
     //.04,.00005,.012
 
     //pulley PID loop doubles
     public static double pulleykP = 0.05; 
     public static double pulleykD = shooterkP *5;
-    public static double pulleykI = 0.001; 
+    public static double pulleykI = 0.05; 
     public static double pulleykF = .45; 
 
 
