@@ -9,6 +9,8 @@ package frc.robot.helper_classes;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANSparkMax;
 
 /**
  * @author: Lou DeZeeuw
@@ -31,12 +33,27 @@ public interface PIDHelp {
         return nativeUnitVelocity; 
     }
 
+    public static double getRPM(CANSparkMax spark) {
+        CANEncoder enc = spark.getEncoder(); 
+        double rpm = enc.getVelocity(); 
+        return rpm; 
+    }
+
     public static double getVelocity(WPI_TalonSRX talon, int pidSlot) {
         return talon.getSelectedSensorVelocity(pidSlot); 
     }
 
     public static double getVelocity(WPI_TalonSRX talon) {
         return talon.getSelectedSensorVelocity(); 
+    }
+
+    public static double getPosition(WPI_TalonSRX talon) {
+        return talon.getSelectedSensorPosition(); 
+    }
+
+    public static double getPosition(CANSparkMax spark) {
+        CANEncoder enc = spark.getEncoder(); 
+        return enc.getPosition(); 
     }
 
     public static void toVelocity(WPI_TalonSRX talon, double velocity) {

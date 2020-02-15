@@ -40,10 +40,10 @@ public final class Constants {
     public static int winch = 11;
 
     //shooter PID loop Doubles
-    public static double shooterkP = 0.00; 
+    public static double shooterkP = 0.0075; 
     public static double shooterkD = shooterkP * 5; 
-    public static double shooterkI = 0.00000;
-    public static double shooterkF = 0.1; 
+    public static double shooterkI = 0.0001;
+    public static double shooterkF = 0.09; 
     //.04,.00005,.012
 
     //pulley PID loop doubles

@@ -18,7 +18,7 @@ import frc.robot.helper_classes.PIDHelp;
 * @author: Lou DeZeeuw, Gabriel Seaver  
 */
 
-public class Pulley extends SubsystemBase implements PIDHelp {
+public class Pulley extends SubsystemBase {
   
   private WPI_TalonSRX pulleyTalon;
 

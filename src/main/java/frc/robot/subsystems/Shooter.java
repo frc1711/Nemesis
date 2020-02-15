@@ -19,7 +19,7 @@ import frc.robot.helper_classes.PIDHelp;
 * @author: Lou DeZeeuw, Gabriel Seaver
 */
 
-public class Shooter extends SubsystemBase implements PIDHelp {
+public class Shooter extends SubsystemBase {
   /**
    * Creates a new Shooter.
    */

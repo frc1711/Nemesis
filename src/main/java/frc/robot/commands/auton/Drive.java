@@ -7,6 +7,7 @@
 
 package frc.robot.commands.auton;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 /**
@@ -14,16 +15,33 @@ import frc.robot.subsystems.DriveTrain;
 */
 
 public class Drive extends CommandBase {
-  DriveTrain driveTrain; 
-  double counts; 
-  double speed; 
-  double timeout; 
-  boolean forward; 
+  private DriveTrain driveTrain; 
+  private Joystick stick; 
+  private double counts; 
+  private double speed; 
+  private double timeout; 
+  private boolean forward; 
+  private int x; 
 
-  public Drive(DriveTrain driveTrain, double speed, double inches, double seconds) {
+  public Drive(DriveTrain driveTrain, Joystick stick, double speed, double inches, double seconds) {
     addRequirements(driveTrain); 
     
     this.driveTrain = driveTrain; 
+    this.stick = stick; 
+    this.speed = speed; 
+    timeout = seconds * 1000;  //time in seconds, system in millis 
+    counts = driveTrain.inchToCount(inches); //converting inches to encoder counts
+    
+    if(Math.abs(counts) != counts) 
+      forward = false; 
+    else
+      forward = true; 
+  }
+
+  public Drive(DriveTrain driveTrain, double speed, double inches, double seconds) {
+    addRequirements(driveTrain);
+    this.driveTrain = driveTrain;
+    this.stick = null;  
     this.speed = speed; 
     timeout = seconds * 1000;  //time in seconds, system in millis 
     counts = driveTrain.inchToCount(inches); //converting inches to encoder counts
@@ -42,11 +60,20 @@ public class Drive extends CommandBase {
     driveTrain.zeroGyro();
   }
 
+  private void print(String string) {
+    if (x > 3) {
+      System.out.println(string); 
+      x = 0; 
+    }
+  }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     double encoderCounts = driveTrain.getAvgEncCount(driveTrain.getEncCount());    
-    
+    x++; 
+    print("ENC: " + (counts-encoderCounts));
+
     if(forward) { 
     //subtract encoder counts from target count to get dist away
       if(counts-encoderCounts > 100) { 
@@ -74,10 +101,14 @@ public class Drive extends CommandBase {
   @Override
   public boolean isFinished() {
     double encoderCounts = driveTrain.getIndividualEncCount();    
-    
-    if(Math.abs(counts-encoderCounts) > 2){
+    if(stick != null && stick.getRawButtonReleased(2))
+      return true; 
+
+    if(forward && counts - encoderCounts > 2){
       return false;
-    } else {
+    } else if(!forward && counts- encoderCounts < 2)  {
+      return false; 
+    }else {
       //print final distance in NU counts from target
       System.out.println(Math.abs(counts-encoderCounts)); 
       System.out.println(counts-encoderCounts);

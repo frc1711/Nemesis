@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.RunClimber;
 import frc.robot.commands.RunWinch;
 import frc.robot.commands.WestCoastDrive;
+import frc.robot.commands.auton.Drive;
 import frc.robot.commands.auton.StraightAuton;
 import frc.robot.commands.CentralSystem;
 import frc.robot.commands.GetColor;
@@ -52,14 +53,14 @@ public class RobotContainer {
   public Joystick driverTwo = new Joystick(1); 
   
   //BUTTONS
-  //private JoystickButton getColorButton = new JoystickButton(driverOne, 1);
- 
+  //private JoystickButton getColorButton = new JoystickButton(driverOne, 2);
+  private JoystickButton driveBack = new JoystickButton(driverOne, 1); 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     //Assign default commands 
-    driveTrain.setDefaultCommand(new WestCoastDrive(driveTrain, () -> driverOne.getRawAxis(1), () -> driverOne.getRawAxis(4))); 
+    driveTrain.setDefaultCommand(new WestCoastDrive(driveTrain, () -> driverOne.getRawAxis(1), () -> driverOne.getRawAxis(4), () -> driverOne.getRawButtonReleased(3))); 
     climber.setDefaultCommand(new RunClimber(climber, () -> driverTwo.getRawAxis(1)));
     pulley.setDefaultCommand(new CentralSystem(pulley, shooter, intake, driverTwo)); 
     winch.setDefaultCommand(new RunWinch(winch, () -> driverTwo.getRawAxis(5)));
@@ -75,6 +76,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     //getColorButton.whenHeld(new GetColor(colorSensor));]
+    driveBack.whenPressed(new Drive(driveTrain, driverOne, .1, 22, 2)); 
   }
 
 
