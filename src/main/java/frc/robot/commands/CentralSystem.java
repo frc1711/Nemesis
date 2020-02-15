@@ -26,7 +26,7 @@ public class CentralSystem extends CommandBase {
   private Intake intake;  
   private Joystick stick; 
 
-  private boolean secondToggle; 
+  private boolean pastMiddle; 
   private boolean shootMode; 
   private boolean created; 
   private boolean hold; 
@@ -93,12 +93,12 @@ public class CentralSystem extends CommandBase {
     Ball lastBall = ballHandler.getLastBallHandled(); 
 
     if(pulley.getMiddleSensor()) {
-      if(!secondToggle && ballHandler.numBallsInRobot() > 0) {
+      if(!pastMiddle && ballHandler.numBallsInRobot() > 0) {
         lastBall.setPastSensor(true); 
-        secondToggle = true; 
+        pastMiddle = true; 
       }
     } else {
-      secondToggle = false; 
+      pastMiddle = false; 
     }
 
     if(ballHandler.numBallsInRobot() == 1) {
@@ -117,11 +117,6 @@ public class CentralSystem extends CommandBase {
   }
   
   private void automatedShooter() {
-    if(stick.getRawButtonReleased(1)){
-      hold = !hold;
-      shootMode = !shootMode;  
-    }
-
     if(hold) { 
       shooter.toVelocity(8500);
       shootMode = true; 
@@ -165,13 +160,15 @@ public class CentralSystem extends CommandBase {
   }
 
   private void intake() {
-    if(!pulley.getBottomSensor() || manual) {
+    if((!pulley.getBottomSensor() && ballHandler.numBallsInRobot() >= 5) || manual) {
       if(stick.getRawButton(5))
         intake.run(.3); 
       else if (stick.getRawButton(6))
         intake.run(-.3); 
       else
         intake.stop(); 
+    } else if (stick.getRawButton(6)) {
+      intake.run(-.2); 
     } else {
       intake.stop(); 
     }
@@ -213,7 +210,7 @@ public class CentralSystem extends CommandBase {
     shootMode = false; 
     destroyed = false; 
     created = false; 
-    secondToggle = false; 
+    pastMiddle = false; 
     reverse = false; 
   }
   // Called every time the scheduler runs while the command is scheduled.
