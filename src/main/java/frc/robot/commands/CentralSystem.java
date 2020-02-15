@@ -26,7 +26,7 @@ public class CentralSystem extends CommandBase {
   private Intake intake;  
   private Joystick stick; 
 
-  private boolean pastMiddle; 
+  private boolean secondToggle; 
   private boolean shootMode; 
   private boolean created; 
   private boolean hold; 
@@ -93,12 +93,12 @@ public class CentralSystem extends CommandBase {
     Ball lastBall = ballHandler.getLastBallHandled(); 
 
     if(pulley.getMiddleSensor()) {
-      if(!pastMiddle && ballHandler.numBallsInRobot() > 0) {
+      if(!secondToggle && ballHandler.numBallsInRobot() > 0) {
         lastBall.setPastSensor(true); 
-        pastMiddle = true; 
+        secondToggle = true; 
       }
     } else {
-      pastMiddle = false; 
+      secondToggle = false; 
     }
 
     if(ballHandler.numBallsInRobot() == 1) {
@@ -117,6 +117,11 @@ public class CentralSystem extends CommandBase {
   }
   
   private void automatedShooter() {
+    if(stick.getRawButtonReleased(1)){
+      hold = !hold;
+      shootMode = !shootMode;  
+    }
+
     if(hold) { 
       shooter.toVelocity(8500);
       shootMode = true; 
@@ -146,9 +151,7 @@ public class CentralSystem extends CommandBase {
   private void flyWheel() {
     if(stick.getRawButton(2) && !manual && shooter.getVelocity() > 8400) {
       shooter.runFlyWheel();
-    } else if (stick.getRawButton(2) && manual) {
-      shooter.runFlyWheel(); 
-    }else {
+    } else {
       shooter.stopFlyWheel();
     }
   }
@@ -160,15 +163,13 @@ public class CentralSystem extends CommandBase {
   }
 
   private void intake() {
-    if((!pulley.getBottomSensor() && ballHandler.numBallsInRobot() >= 5) || manual) {
+    if(!pulley.getBottomSensor() || manual) {
       if(stick.getRawButton(5))
         intake.run(.3); 
       else if (stick.getRawButton(6))
         intake.run(-.3); 
       else
         intake.stop(); 
-    } else if (stick.getRawButton(6)) {
-      intake.run(-.2); 
     } else {
       intake.stop(); 
     }
@@ -210,13 +211,14 @@ public class CentralSystem extends CommandBase {
     shootMode = false; 
     destroyed = false; 
     created = false; 
-    pastMiddle = false; 
+    secondToggle = false; 
     reverse = false; 
   }
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    print("NUM BALLS: " + ballHandler.numBallsInRobot()); 
+    print("VELOCITY: " + shooter.getVelocity()); 
+    //print("NUM BALLS: " + ballHandler.numBallsInRobot()); 
 
     flipButtons(); 
     removeAllBalls(stick.getRawButton(3)); 

@@ -66,7 +66,10 @@ public class RunWinch extends CommandBase {
     if(i > 3) {
       double instChange = Math.abs(arr[0] - arr[3]);  
       if(instChange < change) {
-        multiplier = -1; 
+        if(multiplier == -1)
+          multiplier = 1; 
+        else 
+          multiplier = -1; 
       }
 
       i = 0; 
