@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.helper_classes.PIDHelp;
 
 public class Winch extends SubsystemBase {
   /**
@@ -20,10 +21,15 @@ public class Winch extends SubsystemBase {
 
   public Winch() {
     winchSpark = new CANSparkMax(11, MotorType.kBrushless); 
+
   }
 
   public void run(double speed) {
     winchSpark.set(speed); 
+  }
+
+  public double getPosition() {
+    return PIDHelp.getPosition(winchSpark); 
   }
 
   @Override

@@ -18,12 +18,23 @@ public class RunWinch extends CommandBase {
    */
   private Winch winch; 
   private DoubleSupplier speed; 
+  private double initialLocation; 
+  private int i;
+  private int multiplier; 
+  private double change; 
+  private double[] arr; 
+  private boolean checked; 
 
   public RunWinch(Winch winch, DoubleSupplier speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(winch);
     this.winch = winch; 
     this.speed = speed; 
+    initialLocation = winch.getPosition(); 
+    i = 0; 
+    multiplier = 1; 
+    arr = new double[4]; 
+    checked = false; 
   }
 
   // Called when the command is initially scheduled.
@@ -34,8 +45,25 @@ public class RunWinch extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(Math.abs(speed.getAsDouble()) > .1 && !checked) {
+      arr[i] = winch.getPosition(); 
+      i++; 
+    }
+
+    if(i > 3) {
+      double firstInst = arr[3] - arr[2]; 
+      double secondInst = arr[2] - arr[1]; 
+      double thirdInst = arr[1] - arr[0]; 
+
+      if(firstInst < change || secondInst < change || thirdInst < change) {
+        multiplier = -1; 
+      }
+
+      i = 0; 
+    }
+
     if(Math.abs(speed.getAsDouble()) > .1) 
-      winch.run(speed.getAsDouble()); 
+      winch.run(speed.getAsDouble() * multiplier); 
     else
       winch.run(0); 
   }

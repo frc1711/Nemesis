@@ -111,7 +111,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void rawWestCoast(double speed, double rot) {
-    if(Math.abs(speed) > .01 || Math.abs(rot) > .01)
+    if(Math.abs(speed) > .05 || Math.abs(rot) > .05)
       rDrive.arcadeDrive(speed, rot); 
     else 
       stop();

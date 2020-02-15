@@ -15,7 +15,6 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pulley;
 import frc.robot.subsystems.Shooter;
 
-//TODO: reconfigure shooter system to work for manual and automated
 public class CentralSystem extends CommandBase {
   /**
    * @author: Lou DeZeeuw
@@ -27,7 +26,7 @@ public class CentralSystem extends CommandBase {
   private Intake intake;  
   private Joystick stick; 
 
-  private boolean secondToggle; 
+  private boolean pastMiddle; 
   private boolean shootMode; 
   private boolean created; 
   private boolean hold; 
@@ -45,13 +44,7 @@ public class CentralSystem extends CommandBase {
     this.shooter = shooter; 
     this.stick = stick; 
 
-    hold = false; 
-    shootMode = false; 
-    destroyed = false; 
-    created = false; 
-    secondToggle = false; 
-    reverse = false; 
-    manual = false; 
+    defaultButtons();
 
     ballHandler = new BallHandler(); 
   }
@@ -65,8 +58,10 @@ public class CentralSystem extends CommandBase {
   }
 
   private void print(String string) {
-    /*Prints every sixty milliseconds instead of every twenty, 
-    **diminishing lag and improving readability
+    /*
+    * Due to FRC's 20 millisecond loop, this changes the print time from
+    * 20 milliseconds to 60 milliseconds, greatly improving general readability
+    * and reducing lag in the system. 
     */
     x++;
     if (x > 3){  
@@ -81,6 +76,11 @@ public class CentralSystem extends CommandBase {
 
     if(stick.getRawButtonReleased(8)) 
       manual = !manual; 
+
+    if(stick.getRawButtonReleased(1)){
+      hold = !hold;
+      shootMode = !shootMode;  
+    }
   }
   
   private void automatedPulley() {
@@ -92,12 +92,12 @@ public class CentralSystem extends CommandBase {
     Ball lastBall = ballHandler.getLastBallHandled(); 
 
     if(pulley.getMiddleSensor()) {
-      if(!secondToggle && ballHandler.numBallsInRobot() > 0) {
+      if(!pastMiddle && ballHandler.numBallsInRobot() > 0) {
         lastBall.setPastSensor(true); 
-        secondToggle = true; 
+        pastMiddle = true; 
       }
     } else {
-      secondToggle = false; 
+      pastMiddle = false; 
     }
 
     if(ballHandler.numBallsInRobot() == 1) {
@@ -116,13 +116,8 @@ public class CentralSystem extends CommandBase {
   }
   
   private void automatedShooter() {
-    if(stick.getRawButtonReleased(1)){
-      hold = !hold;
-      shootMode = !shootMode;  
-    }
-
     if(hold) { 
-      shooter.toVelocity(7000);
+      shooter.toVelocity(9000);
       shootMode = true; 
     } else {
       shooter.stopShooter(); 
@@ -142,6 +137,9 @@ public class CentralSystem extends CommandBase {
           destroyed = true; 
       }
     }
+
+    if(ballHandler.numBallsInRobot() == 0)
+      shootMode = false; 
   }
 
   private void flyWheel() {
@@ -152,20 +150,20 @@ public class CentralSystem extends CommandBase {
     }
   }
 
-  private void removeAllBalls() {
-    if(stick.getRawButton(3)) {
+  private void removeAllBalls(Boolean bool) {
+    if(bool) {
       ballHandler.removeHighestBall(); 
     }
   }
 
   private void intake() {
-    if(!pulley.getBottomSensor() || manual) {
+    if((!pulley.getBottomSensor() && ballHandler.numBallsInRobot() >= 5) || manual) {
       if(stick.getRawButton(5))
-        intake.run(.4); 
-      else if (stick.getRawButton(6))
-        intake.run(-.4);
+        intake.run(.2); 
       else
         intake.stop(); 
+    } else if (stick.getRawButton(6)) {
+      intake.run(-.2); 
     } else {
       intake.stop(); 
     }
@@ -196,20 +194,28 @@ public class CentralSystem extends CommandBase {
 
   private void manualShooter() {
     if(stick.getRawButton(1)){
-      shooter.toVelocity(7000);
+      shooter.toVelocity(9000);
     } else {
       shooter.toVelocity(0); 
     }
   }
 
+  private void defaultButtons() {
+    hold = false; 
+    shootMode = false; 
+    destroyed = false; 
+    created = false; 
+    pastMiddle = false; 
+    reverse = false; 
+    manual = false; 
+  }
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     print("VELOCITY: " + shooter.getVelocity()); 
-    print("DC: " + shooter.getDutyCycle()); 
 
     flipButtons(); 
-    removeAllBalls(); 
+    removeAllBalls(stick.getRawButton(3)); 
     intake(); 
     flyWheel(); 
     
@@ -224,6 +230,8 @@ public class CentralSystem extends CommandBase {
       print("WARNING: MANUAL MODE."); 
       manualPulley(); 
       manualShooter(); 
+      defaultButtons(); 
+      removeAllBalls(true); 
     }
 
   }

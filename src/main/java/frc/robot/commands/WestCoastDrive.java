@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -18,19 +19,22 @@ import frc.robot.subsystems.DriveTrain;
 
 public class WestCoastDrive extends CommandBase {
 
-  private final DriveTrain driveTrain; 
-  private final DoubleSupplier speed; 
-  private final DoubleSupplier rot; 
+  private DriveTrain driveTrain; 
+  private DoubleSupplier speed; 
+  private DoubleSupplier rot; 
+  private BooleanSupplier flip; 
+  private boolean batBack; 
   private int x; 
 
-  public WestCoastDrive(DriveTrain driveTrain, DoubleSupplier speed, DoubleSupplier rot) {
+  public WestCoastDrive(DriveTrain driveTrain, DoubleSupplier speed, DoubleSupplier rot, BooleanSupplier flip) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrain);
 
     this.driveTrain = driveTrain; 
     this.speed = speed; 
     this.rot = rot; 
-
+    this.flip = flip; 
+    batBack = false; 
   }
 
   // Called when the command is initially scheduled.
@@ -44,7 +48,13 @@ public class WestCoastDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveTrain.rawWestCoast(-speed.getAsDouble(), rot.getAsDouble());
+    if(flip.getAsBoolean())
+      batBack = !batBack; 
+
+    if (batBack) 
+      driveTrain.rawWestCoast(-speed.getAsDouble(), rot.getAsDouble());
+    else 
+      driveTrain.rawWestCoast(speed.getAsDouble(), rot.getAsDouble()); 
   }
 
   // Called once the command ends or is interrupted.
