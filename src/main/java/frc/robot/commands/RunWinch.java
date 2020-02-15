@@ -64,21 +64,21 @@ public class RunWinch extends CommandBase {
     * the program switches the direction of the motor and cancels the loop. 
     */
     if(i > 3) {
-      double firstInst = arr[3] - arr[2]; 
-      double secondInst = arr[2] - arr[1]; 
-      double thirdInst = arr[1] - arr[0]; 
-
-      if(Math.abs(firstInst) < change || Math.abs(secondInst) < change || Math.abs(thirdInst) < change) {
+      double instChange = Math.abs(arr[0] - arr[3]);  
+      if(instChange < change) {
         multiplier = -1; 
       }
 
       i = 0; 
+      System.out.println("[" + arr[0] + ", " + arr[1] + ", " + arr[2] + ", " + arr[3]); 
     }
-
+    
+    System.out.println(multiplier); 
     if(Math.abs(speed.getAsDouble()) > .1) 
       winch.run(speed.getAsDouble() * multiplier); 
     else
       winch.run(0); 
+
   }
 
   // Called once the command ends or is interrupted.
