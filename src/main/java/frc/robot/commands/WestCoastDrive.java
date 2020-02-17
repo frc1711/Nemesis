@@ -22,17 +22,18 @@ public class WestCoastDrive extends CommandBase {
   private DriveTrain driveTrain; 
   private DoubleSupplier speed; 
   private DoubleSupplier rot; 
+  private DoubleSupplier speedControl; 
   private BooleanSupplier flip; 
   private boolean batBack; 
-  private int x; 
 
-  public WestCoastDrive(DriveTrain driveTrain, DoubleSupplier speed, DoubleSupplier rot, BooleanSupplier flip) {
+  public WestCoastDrive(DriveTrain driveTrain, DoubleSupplier speed, DoubleSupplier rot, DoubleSupplier speedControl, BooleanSupplier flip) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrain);
 
     this.driveTrain = driveTrain; 
     this.speed = speed; 
     this.rot = rot; 
+    this.speedControl = speedControl; 
     this.flip = flip; 
     batBack = false; 
   }
@@ -42,7 +43,6 @@ public class WestCoastDrive extends CommandBase {
   public void initialize() {
     driveTrain.stop();
     driveTrain.zeroEncoders();  
-    x = 0; 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -51,11 +51,18 @@ public class WestCoastDrive extends CommandBase {
     if(flip.getAsBoolean())
       batBack = !batBack; 
 
-    if (batBack) 
-      driveTrain.rawWestCoast(-speed.getAsDouble(), rot.getAsDouble());
-    else 
-      driveTrain.rawWestCoast(speed.getAsDouble(), rot.getAsDouble()); 
-  }
+    if (batBack){ 
+      if(speedControl.getAsDouble() > .1)
+        driveTrain.rawWestCoast(-speed.getAsDouble(), rot.getAsDouble());
+      else 
+        driveTrain.rawWestCoast(-speed.getAsDouble() * .75, rot.getAsDouble() * .75); 
+    } else {
+      if(speedControl.getAsDouble() > .1)
+        driveTrain.rawWestCoast(speed.getAsDouble(), -rot.getAsDouble()); 
+      else 
+        driveTrain.rawWestCoast(speed.getAsDouble() * .75, -rot.getAsDouble() * .75); 
+   }
+ }
 
   // Called once the command ends or is interrupted.
   @Override

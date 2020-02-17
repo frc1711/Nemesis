@@ -29,6 +29,8 @@ public class Shooter extends SubsystemBase {
   private WPI_TalonSRX flyWheel;
 
   private DigitalInput topSensor; 
+
+  private PIDHelp pidHelp = new PIDHelp(); 
   
 
   public Shooter() {
@@ -63,19 +65,19 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getRPM() {
-    return PIDHelp.getRPM(shooterTalon); 
+    return pidHelp.getRPM(shooterTalon); 
   }
 
   public double getVelocity() {
-    return PIDHelp.getVelocity(shooterTalon);  
+    return pidHelp.getVelocity(shooterTalon);  
   }
 
   public void toVelocity(double velocity) {
-    PIDHelp.toVelocity(shooterTalon, velocity);
+    pidHelp.toVelocity(shooterTalon, velocity);
   }
 
   public void toRPM(double RPM) {
-    PIDHelp.toRPM(shooterTalon, RPM); 
+    pidHelp.toRPM(shooterTalon, RPM); 
   }
 
   //FLY-WHEEL KICKER

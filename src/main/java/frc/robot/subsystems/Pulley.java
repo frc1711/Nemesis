@@ -25,6 +25,8 @@ public class Pulley extends SubsystemBase {
   private DigitalInput bottomSensor; 
   private DigitalInput middleSensor; 
 
+  private PIDHelp pidHelp; 
+
   public Pulley() {
     pulleyTalon = new WPI_TalonSRX(Constants.pulley);
 
@@ -37,6 +39,8 @@ public class Pulley extends SubsystemBase {
 
     bottomSensor = new DigitalInput(Constants.bottomSensor); 
     middleSensor = new DigitalInput(Constants.middleSensor); 
+
+    pidHelp = new PIDHelp(); 
   }
 
   public void run(double speed) {
@@ -48,19 +52,19 @@ public class Pulley extends SubsystemBase {
   }
 
   public double getRPM() {
-    return PIDHelp.getRPM(pulleyTalon); 
+    return pidHelp.getRPM(pulleyTalon); 
   }
 
   public double getVelocity() {
-    return PIDHelp.getVelocity(pulleyTalon); 
+    return pidHelp.getVelocity(pulleyTalon); 
   }
 
   public void toVelocity(double velocity) {
-    PIDHelp.toVelocity(pulleyTalon, velocity); 
+    pidHelp.toVelocity(pulleyTalon, velocity); 
   }
 
   public void toRPM(double RPM) {
-    PIDHelp.toRPM(pulleyTalon, RPM); 
+    pidHelp.toRPM(pulleyTalon, RPM); 
   }
 
   public boolean getBottomSensor() {

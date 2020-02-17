@@ -18,7 +18,6 @@ public class RunWinch extends CommandBase {
    */
   private Winch winch; 
   private DoubleSupplier speed; 
-  private double initialLocation; 
   private int i;
   private int multiplier; 
   private double change; 
@@ -30,7 +29,6 @@ public class RunWinch extends CommandBase {
     addRequirements(winch);
     this.winch = winch; 
     this.speed = speed; 
-    initialLocation = winch.getPosition(); 
     i = 0; 
     multiplier = 1; 
     change = .1; 
@@ -76,7 +74,6 @@ public class RunWinch extends CommandBase {
       System.out.println("[" + arr[0] + ", " + arr[1] + ", " + arr[2] + ", " + arr[3]); 
     }
     
-    System.out.println(multiplier); 
     if(Math.abs(speed.getAsDouble()) > .1) 
       winch.run(speed.getAsDouble() * multiplier); 
     else

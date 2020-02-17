@@ -107,6 +107,7 @@ public class GetColor extends CommandBase {
     double g = colorDetected.green;
     double b = colorDetected.blue;
     int categoryDetected = categorizeColor(r, g, b);
+    System.out.println(categoryDetected); 
   }
 
   // Called once the command ends or is interrupted.

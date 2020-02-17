@@ -18,16 +18,17 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pulley;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Winch;
-import frc.robot.subsystems.ColorSensor;
+// import frc.robot.subsystems.ColorSensor;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.RunClimber;
 import frc.robot.commands.RunWinch;
 import frc.robot.commands.WestCoastDrive;
 import frc.robot.commands.auton.Drive;
+import frc.robot.commands.auton.ShortAuton;
 import frc.robot.commands.auton.StraightAuton;
 import frc.robot.commands.CentralSystem;
-import frc.robot.commands.GetColor;
+// import frc.robot.commands.GetColor;
 
 
 
@@ -47,8 +48,8 @@ public class RobotContainer {
   //private final ColorSensor colorSensor = new ColorSensor();
   private final Pulley pulley = new Pulley(); 
   private final Intake intake = new Intake(); 
-  private final Command autonomousCommand = new StraightAuton(driveTrain, shooter, pulley); 
-  
+  private final Command autonomousCommand = new ShortAuton(driveTrain, shooter, pulley); 
+  //private final Command autonomousCommand = new Drive(driveTrain, .1, -12, 100); 
   public Joystick driverOne = new Joystick(0); 
   public Joystick driverTwo = new Joystick(1); 
   
@@ -60,7 +61,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
     //Assign default commands 
-    driveTrain.setDefaultCommand(new WestCoastDrive(driveTrain, () -> driverOne.getRawAxis(1), () -> driverOne.getRawAxis(4), () -> driverOne.getRawButtonReleased(3))); 
+    driveTrain.setDefaultCommand(new WestCoastDrive(driveTrain, () -> driverOne.getRawAxis(1), () -> driverOne.getRawAxis(4), () -> driverOne.getRawAxis(3), () -> driverOne.getRawButtonReleased(3))); 
     climber.setDefaultCommand(new RunClimber(climber, () -> driverTwo.getRawAxis(1)));
     pulley.setDefaultCommand(new CentralSystem(pulley, shooter, intake, driverTwo)); 
     winch.setDefaultCommand(new RunWinch(winch, () -> driverTwo.getRawAxis(5)));

@@ -23,11 +23,11 @@ public class ShortAuton extends SequentialCommandGroup {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super(
-      new Drive(driveTrain, 0.1, -55.2, 100),
-      new Turn(driveTrain, 0.3, 90),
-      new Drive(driveTrain, 0.1, -95.2, 100),
-      new Turn(driveTrain, 0.3, -45),
-      new Drive(driveTrain, 0.1, 15, 100),
+      new DriveCorrect(driveTrain, 0.125, .1, -25.5),
+      new Turn(driveTrain, 0.2, 90),
+      new DriveCorrect(driveTrain, 0.125, .1, -60),
+      new Turn(driveTrain, 0.2, -39),
+      // new DriveCorrect(driveTrain, 0.125, .1, 15),
       new Shoot(shooter, pulley)
     );
   }

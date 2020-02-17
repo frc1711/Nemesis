@@ -23,7 +23,7 @@ public class StraightAuton extends SequentialCommandGroup {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super(
-      new Drive(driveTrain, 0.1, -70.2, 100),
+      new DriveCorrect(driveTrain, 0.125, .1, -79.2),
       new Shoot(shooter, pulley)
     );
   }

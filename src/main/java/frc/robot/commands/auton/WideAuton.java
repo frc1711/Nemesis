@@ -23,9 +23,9 @@ public class WideAuton extends SequentialCommandGroup {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super(
-      new Drive(driveTrain, 0.1, -32.6, 100),
+      new Drive(driveTrain, 0.1, -32.6),
       new Turn(driveTrain, 0.3, -34),
-      new Drive(driveTrain, 0.1, -164.2, 100),
+      new Drive(driveTrain, 0.1, -164.2),
       new Shoot(shooter, pulley)
     );
   }

@@ -24,12 +24,12 @@ public class PushAuton extends SequentialCommandGroup {
     // super(new FooCommand(), new BarCommand());
     super(
       new StraightAuton(driveTrain, shooter, pulley),
-      new Drive(driveTrain, 0.1, 15, 100),
+      new Drive(driveTrain, 0.1, 15),
       new Turn(driveTrain, 0.3, -90),
-      new Drive(driveTrain, 0.1, 45, 100),
+      new Drive(driveTrain, 0.1, 45),
       new Turn(driveTrain, 0.3, 90),
-      new Drive(driveTrain, 0.3, 61, 100), //Run into the robots
-      new Drive(driveTrain, 0.1, -30, 100)
+      new Drive(driveTrain, 0.3, 61), //Run into the robots
+      new Drive(driveTrain, 0.1, -30)
     );
   }
 }

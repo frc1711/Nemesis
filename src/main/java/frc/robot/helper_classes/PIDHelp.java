@@ -15,9 +15,9 @@ import com.revrobotics.CANSparkMax;
 /**
  * @author: Lou DeZeeuw
  */
-public interface PIDHelp {
+public class PIDHelp {
 
-    public static double getRPM(WPI_TalonSRX talon, int pidSlot) {
+    public double getRPM(WPI_TalonSRX talon, int pidSlot) {
         double nativeUnitVelocity = talon.getSelectedSensorVelocity(pidSlot);
         nativeUnitVelocity /= .1;
         nativeUnitVelocity /= 4096;
@@ -25,7 +25,7 @@ public interface PIDHelp {
         return nativeUnitVelocity; 
     }
     
-    public static double getRPM(WPI_TalonSRX talon) {
+    public double getRPM(WPI_TalonSRX talon) {
         double nativeUnitVelocity = talon.getSelectedSensorVelocity();
         nativeUnitVelocity /= .1;
         nativeUnitVelocity /= 4096;
@@ -33,34 +33,34 @@ public interface PIDHelp {
         return nativeUnitVelocity; 
     }
 
-    public static double getRPM(CANSparkMax spark) {
+    public double getRPM(CANSparkMax spark) {
         CANEncoder enc = spark.getEncoder(); 
         double rpm = enc.getVelocity(); 
         return rpm; 
     }
 
-    public static double getVelocity(WPI_TalonSRX talon, int pidSlot) {
+    public double getVelocity(WPI_TalonSRX talon, int pidSlot) {
         return talon.getSelectedSensorVelocity(pidSlot); 
     }
 
-    public static double getVelocity(WPI_TalonSRX talon) {
+    public double getVelocity(WPI_TalonSRX talon) {
         return talon.getSelectedSensorVelocity(); 
     }
 
-    public static double getPosition(WPI_TalonSRX talon) {
+    public double getPosition(WPI_TalonSRX talon) {
         return talon.getSelectedSensorPosition(); 
     }
 
-    public static double getPosition(CANSparkMax spark) {
+    public double getPosition(CANSparkMax spark) {
         CANEncoder enc = spark.getEncoder(); 
         return enc.getPosition(); 
     }
 
-    public static void toVelocity(WPI_TalonSRX talon, double velocity) {
+    public void toVelocity(WPI_TalonSRX talon, double velocity) {
         talon.set(ControlMode.Velocity, velocity);
     }
 
-    public static void toRPM(WPI_TalonSRX talon, double RPM) {
+    public void toRPM(WPI_TalonSRX talon, double RPM) {
         double velocity = RPM * 4096; 
         talon.set(ControlMode.Velocity, velocity); 
     }

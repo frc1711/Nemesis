@@ -18,10 +18,11 @@ public class Winch extends SubsystemBase {
    * Creates a new Winch.
    */
   private CANSparkMax winchSpark; 
+  private PIDHelp pidHelp; 
 
   public Winch() {
     winchSpark = new CANSparkMax(11, MotorType.kBrushless); 
-
+    pidHelp = new PIDHelp(); 
   }
 
   public void run(double speed) {
@@ -29,7 +30,7 @@ public class Winch extends SubsystemBase {
   }
 
   public double getPosition() {
-    return PIDHelp.getPosition(winchSpark); 
+    return pidHelp.getPosition(winchSpark); 
   }
 
   @Override
