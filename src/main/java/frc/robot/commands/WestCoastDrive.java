@@ -58,9 +58,9 @@ public class WestCoastDrive extends CommandBase {
         driveTrain.rawWestCoast(-speed.getAsDouble() * .75, rot.getAsDouble() * .75); 
     } else {
       if(speedControl.getAsDouble() > .1)
-        driveTrain.rawWestCoast(speed.getAsDouble(), -rot.getAsDouble()); 
+        driveTrain.rawWestCoast(speed.getAsDouble(), rot.getAsDouble()); 
       else 
-        driveTrain.rawWestCoast(speed.getAsDouble() * .75, -rot.getAsDouble() * .75); 
+        driveTrain.rawWestCoast(speed.getAsDouble() * .75, rot.getAsDouble() * .75); 
    }
  }
 

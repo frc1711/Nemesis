@@ -18,19 +18,22 @@ public class Shoot extends CommandBase {
   private Shooter shooter; 
   private Pulley pulley; 
   private BallHandler ballHandler; 
+  private boolean destroyed; 
 
   public Shoot(Shooter shooter, Pulley pulley) {
     this.shooter = shooter; 
     this.pulley = pulley; 
-    ballHandler = new BallHandler(); 
-    ballHandler.addBall(new Ball()); 
-    
+    destroyed = false; 
+    ballHandler = new BallHandler();  
     addRequirements(shooter, pulley); 
   }
 
   @Override
   public void initialize() {
-
+    ballHandler.addBall(new Ball()); 
+    ballHandler.addBall(new Ball()); 
+    ballHandler.addBall(new Ball());
+    
     shooter.stopFlyWheel();
     shooter.stopShooter();
   }
@@ -38,18 +41,23 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
     shooter.toVelocity(8500);
-    System.out.println(shooter.getVelocity()); 
     if(shooter.getVelocity() > 8300 && shooter.getVelocity() < 8700 && shooter.getTopSensor()) {
       shooter.runFlyWheel(); 
+      if (!destroyed){
+        System.out.println("DESTROYED!"); 
+        ballHandler.removeHighestBall(); 
+        destroyed = true; 
+      }
     } else {
       shooter.stopFlyWheel(); 
     }
 
     if(!shooter.getTopSensor()) {
       pulley.run(.25); 
+      destroyed = false; 
     } else {
       pulley.run(0); 
-    }
+    } 
   }
 
   @Override
@@ -57,5 +65,12 @@ public class Shoot extends CommandBase {
     pulley.stop(); 
     shooter.stopShooter();
     shooter.stopFlyWheel(); 
+  }
+
+  @Override
+  public boolean isFinished() {
+    if(ballHandler.numBallsInRobot() == 0 && !destroyed)
+      return true; 
+    return false; 
   }
 }

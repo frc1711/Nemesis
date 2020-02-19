@@ -117,6 +117,10 @@ public class DriveTrain extends SubsystemBase {
       stop();
   }
 
+  public void westCoast(double speed, double rot) {
+    rDrive.arcadeDrive(speed, rot); 
+  }
+
   //AUTON EXECUTION CODE
   public double[] getEncCount() {
     double[] arr = new double[4]; 

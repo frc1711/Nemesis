@@ -15,16 +15,17 @@ import frc.robot.subsystems.Shooter;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class StraightAuton extends SequentialCommandGroup {
+public class RightShortAuton extends SequentialCommandGroup {
   /**
-   * Creates a new StraightAuton.
+   * Creates a new RightShortAuton.
    */
-  public StraightAuton(DriveTrain driveTrain, Shooter shooter, Pulley pulley) {
+  public RightShortAuton(DriveTrain driveTrain, Shooter shooter, Pulley pulley) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(
-      //new DriveCorrect(driveTrain, 0.125, .1, -79.2),
-      new DriveCorrect(driveTrain, .125, .125, -79.2), 
+    
+    super (
+      new DriveCorrect(driveTrain, 0.125, .075, -63),
+      new Turn(driveTrain, 0.2, 39),
       new Shoot(shooter, pulley)
     );
   }

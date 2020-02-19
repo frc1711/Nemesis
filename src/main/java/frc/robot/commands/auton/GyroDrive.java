@@ -14,7 +14,7 @@ import frc.robot.subsystems.DriveTrain;
 * @author: Lou DeZeeuw  
 */
 
-public class Drive extends CommandBase {
+public class GyroDrive extends CommandBase {
   private DriveTrain driveTrain; 
   private Joystick stick; 
   private double counts; 
@@ -22,21 +22,7 @@ public class Drive extends CommandBase {
   private boolean forward; 
   private int x; 
 
-  public Drive(DriveTrain driveTrain, Joystick stick, double speed, double inches) {
-    addRequirements(driveTrain); 
-    
-    this.driveTrain = driveTrain; 
-    this.stick = stick; 
-    this.speed = speed; 
-    counts = driveTrain.inchToCount(inches); //converting inches to encoder counts
-    
-    if(Math.abs(counts) != counts) 
-      forward = false; 
-    else
-      forward = true; 
-  }
-
-  public Drive(DriveTrain driveTrain, double speed, double inches) {
+  public GyroDrive(DriveTrain driveTrain, double speed, double inches) {
     addRequirements(driveTrain);
     this.driveTrain = driveTrain;
     this.stick = null;  
@@ -64,26 +50,30 @@ public class Drive extends CommandBase {
     }
   }
 
+  private double normalize(double angle, double max) {
+      return Math.max(-max, Math.min(angle, max)); 
+  }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double encoderCounts = driveTrain.getAvgEncCount(driveTrain.getEncCount());    
-    x++; 
+    double angle = driveTrain.getYaw(); 
+    double encoderCounts = driveTrain.getAvgEncCount(driveTrain.getEncCount()); 
 
     if(forward) { 
-    //subtract encoder counts from target count to get dist away
-      if(counts-encoderCounts > 100) { 
-        driveTrain.drive(speed);
-      } else {
-        driveTrain.drive(speed*.5); 
-      }
-    } else {
-      if(counts - encoderCounts < -100) {
-        driveTrain.drive(-speed); 
-      } else {
-        driveTrain.drive(-speed*.5); 
-      }
-    }
+        //subtract encoder counts from target count to get dist away
+          if(counts-encoderCounts > 100) { 
+            driveTrain.westCoast(speed, normalize(angle / 100, speed));
+          } else {
+            driveTrain.westCoast(speed*.5, normalize(angle / 100, speed * .5)); 
+          }
+        } else {
+          if(counts - encoderCounts < -100) {
+            driveTrain.westCoast(-speed, normalize(angle / 100, -speed));
+          } else {
+            driveTrain.westCoast(-speed * .5, normalize(angle / 100, -speed * .5));
+          }
+        }
     
   }
 

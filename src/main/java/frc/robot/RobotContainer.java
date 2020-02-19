@@ -25,7 +25,8 @@ import frc.robot.commands.RunClimber;
 import frc.robot.commands.RunWinch;
 import frc.robot.commands.WestCoastDrive;
 import frc.robot.commands.auton.Drive;
-import frc.robot.commands.auton.ShortAuton;
+import frc.robot.commands.auton.LeftShortAuton;
+import frc.robot.commands.auton.RightShortAuton;
 import frc.robot.commands.auton.StraightAuton;
 import frc.robot.commands.CentralSystem;
 // import frc.robot.commands.GetColor;
@@ -48,7 +49,7 @@ public class RobotContainer {
   //private final ColorSensor colorSensor = new ColorSensor();
   private final Pulley pulley = new Pulley(); 
   private final Intake intake = new Intake(); 
-  private final Command autonomousCommand = new ShortAuton(driveTrain, shooter, pulley); 
+  private final Command autonomousCommand = new RightShortAuton(driveTrain, shooter, pulley); 
   //private final Command autonomousCommand = new Drive(driveTrain, .1, -12, 100); 
   public Joystick driverOne = new Joystick(0); 
   public Joystick driverTwo = new Joystick(1); 
@@ -77,7 +78,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     //getColorButton.whenHeld(new GetColor(colorSensor));]
-    driveBack.whenPressed(new Drive(driveTrain, driverOne, .1, 22, 2)); 
+    driveBack.whenPressed(new Drive(driveTrain, driverOne, .1, 22)); 
   }
 
 
