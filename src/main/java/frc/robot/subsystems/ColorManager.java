@@ -5,25 +5,34 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.ColorSensorV3;
+
+import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ColorSensor;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 /** 
 * @author: Gabriel Seaver, Lou DeZeeuw  
 */
 
-public class GetColor extends CommandBase {
+public class ColorManager extends SubsystemBase {
   
   private Color colorDetected;
-  private ColorSensor colorSensor;
+  private ColorSensorV3 colorSensor;
+  private WPI_TalonSRX colorTalon;
 
-  public GetColor(ColorSensor colorSensor) {
-    addRequirements(colorSensor);
+  public ColorManager() {
+    colorSensor = new ColorSensorV3(Port.kOnboard); 
+    colorTalon = new WPI_TalonSRX(Constants.colorWheel); 
+  }
 
-    this.colorSensor = colorSensor;
+  public Color getColor() {
+    colorDetected = colorSensor.getColor(); 
+    return colorDetected; 
   }
 
   public class ColorCoordinate { //THIS IS A CLASS FOR DESCRIBING COLOR AS A 3D COORDINATE
@@ -38,7 +47,7 @@ public class GetColor extends CommandBase {
       this.blue = b;
     }
 
-    public double dist (ColorCoordinate point) { //THIS IS A 3D DISTANCE CALCULATOR
+    private double dist (ColorCoordinate point) { //THIS IS A 3D DISTANCE CALCULATOR
       double d;
       double redSq = Math.pow((this.red-point.red), 2);
       double greenSq = Math.pow((this.green-point.green), 2);
@@ -49,7 +58,7 @@ public class GetColor extends CommandBase {
 
   }
 
-  private int categorizeColor(double r, double g, double b) { //This returns the color found in uppercase
+  public char categorizeColor(double r, double g, double b) { //This returns the color found in uppercase
     /*
     Goal of this function: Take any 3D coordinate (representing an rgb color) and categorize it as either yellow, green, red, or blue
     (based on the rgb values of the colors in the competition)
@@ -90,35 +99,26 @@ public class GetColor extends CommandBase {
       }
     }
 
-    return indexOfClosestCategory; 
-
+    switch(indexOfClosestCategory) {
+      case 0: 
+        return 'B';
+      case 1: 
+        return 'G';
+      case 2: 
+        return 'R'; 
+      case 3: 
+        return 'Y'; 
+      default: 
+        return 'N'; 
+    }
   }
 
-  @Override
-  public void initialize() {
-    
+  public void stop() {
+    colorTalon.set(0); 
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    colorDetected = colorSensor.getColor();
-    double r = colorDetected.red;
-    double g = colorDetected.green;
-    double b = colorDetected.blue;
-    int categoryDetected = categorizeColor(r, g, b);
-    System.out.println(categoryDetected); 
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
+  public void run(double speed) {
+    colorTalon.set(speed); 
   }
 }
 

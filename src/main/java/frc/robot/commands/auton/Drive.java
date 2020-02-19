@@ -57,6 +57,7 @@ public class Drive extends CommandBase {
     driveTrain.zeroGyro();
   }
 
+  @SuppressWarnings("unused")
   private void print(String string) {
     if (x > 3) {
       System.out.println(string); 

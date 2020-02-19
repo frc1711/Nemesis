@@ -27,7 +27,6 @@ public final class Constants {
     public static int shooterTwo = 5; 
 
     public static int flyWheel = 8;
-    public static double flyWheelSpeed = 0.75;
 
     public static int climber = 6; 
 
@@ -50,13 +49,18 @@ public final class Constants {
     public static double pulleykP = 0.05; 
     public static double pulleykD = shooterkP *5;
     public static double pulleykI = 0.05; 
-    public static double pulleykF = .45; 
+    public static double pulleykF = 0.45; 
 
 
     //DIO Ports
     public static int bottomSensor = 0; 
     public static int middleSensor = 1; 
     public static int topSensor = 2; 
+  
+    //Speed constants 
+    public static double flyWheelSpeed = 0.75;
+    public static double colorSpeed = 0.2; 
+    public static double pulleySpeed = .25; 
 
     //enums
     public static enum RoboDir { 

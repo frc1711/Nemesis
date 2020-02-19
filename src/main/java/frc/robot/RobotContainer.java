@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.ColorManager;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pulley;
@@ -25,11 +26,12 @@ import frc.robot.commands.RunClimber;
 import frc.robot.commands.RunWinch;
 import frc.robot.commands.WestCoastDrive;
 import frc.robot.commands.auton.Drive;
-import frc.robot.commands.auton.LeftShortAuton;
+// import frc.robot.commands.auton.LeftShortAuton;
 import frc.robot.commands.auton.RightShortAuton;
-import frc.robot.commands.auton.StraightAuton;
+// import frc.robot.commands.auton.StraightAuton;
 import frc.robot.commands.CentralSystem;
 // import frc.robot.commands.GetColor;
+import frc.robot.commands.ColorManipulator;
 
 
 
@@ -46,6 +48,7 @@ public class RobotContainer {
   private final Shooter shooter = new Shooter(); 
   private final Climber climber = new Climber(); 
   private final Winch winch = new Winch(); 
+  private final ColorManager colorManager = new ColorManager(); 
   //private final ColorSensor colorSensor = new ColorSensor();
   private final Pulley pulley = new Pulley(); 
   private final Intake intake = new Intake(); 
@@ -55,8 +58,8 @@ public class RobotContainer {
   public Joystick driverTwo = new Joystick(1); 
   
   //BUTTONS
-  //private JoystickButton getColorButton = new JoystickButton(driverOne, 2);
   private JoystickButton driveBack = new JoystickButton(driverOne, 1); 
+  private JoystickButton colorWheel = new JoystickButton(driverOne, 4); //TODO this needs to be y
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -77,7 +80,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    //getColorButton.whenHeld(new GetColor(colorSensor));]
+	  colorWheel.whenHeld(new ColorManipulator(colorManager)); 
     driveBack.whenPressed(new Drive(driveTrain, driverOne, .1, 22)); 
   }
 

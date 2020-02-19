@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.helper_classes.Ball;
 import frc.robot.helper_classes.BallHandler;
 import frc.robot.subsystems.Intake;
@@ -109,7 +110,7 @@ public class CentralSystem extends CommandBase {
         created = false; 
       }
     } else if (ballHandler.numBallsInRobot() > 1 && ballHandler.getSecondToLastBallHandled().getPastSensor() && !lastBall.getPastSensor()) {
-      pulley.run(.25); 
+      pulley.run(Constants.pulleySpeed); 
     } else {
       pulley.stop(); 
       created = false; 
@@ -132,7 +133,7 @@ public class CentralSystem extends CommandBase {
     if(!shooter.getTopSensor()) {
       destroyed = false; 
       if(shootMode) {
-        pulley.run(.25); 
+        pulley.run(Constants.pulleySpeed); 
       }
     }
 
@@ -176,7 +177,7 @@ public class CentralSystem extends CommandBase {
   }
 
   private void reverse() {
-    pulley.run(-.25); 
+    pulley.run(-1 * Constants.pulleySpeed); 
 
     if(pulley.getBottomSensor() && !destroyed) {
       ballHandler.removeHighestBall(); 
@@ -190,9 +191,9 @@ public class CentralSystem extends CommandBase {
 
   private void manualPulley() {
     if(stick.getRawButton(4)) {
-      pulley.run(-.25); 
+      pulley.run(-1 * Constants.pulleySpeed); 
     } else if(stick.getRawButton(3)) {
-      pulley.run(.25); 
+      pulley.run(Constants.pulleySpeed); 
     } else {
       pulley.run(0); 
     }
