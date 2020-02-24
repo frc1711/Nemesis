@@ -23,6 +23,11 @@ public class BallHandler {
         ballList.add(ball); 
     }
 
+    public void addBall(Ball... ball) {
+        for(Ball b : ball) 
+            ballList.add(b); 
+    }
+    
     public void removeBall(int ballID) {
         for(Ball b : ballList) {
             if(b.getID() == ballID) {

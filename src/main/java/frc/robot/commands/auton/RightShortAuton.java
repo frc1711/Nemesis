@@ -24,7 +24,7 @@ public class RightShortAuton extends SequentialCommandGroup {
     // super(new FooCommand(), new BarCommand());
     
     super (
-      new DriveCorrect(driveTrain, 0.125, .075, -63),
+      new DriveCorrect(driveTrain, 0.125, .075, -60),
       new Turn(driveTrain, 0.2, 39),
       new Shoot(shooter, pulley)
     );

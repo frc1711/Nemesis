@@ -43,11 +43,10 @@ public final class Constants {
     public static double shooterkD = shooterkP * 5; 
     public static double shooterkI = 0.0001;
     public static double shooterkF = 0.09; 
-    //.04,.00005,.012
 
     //pulley PID loop doubles
     public static double pulleykP = 0.05; 
-    public static double pulleykD = shooterkP *5;
+    public static double pulleykD = shooterkP * 5;
     public static double pulleykI = 0.05; 
     public static double pulleykF = 0.45; 
 
@@ -58,9 +57,15 @@ public final class Constants {
     public static int topSensor = 2; 
   
     //Speed constants 
+    //Not sticky balls:
+    //speed = 8350, kF .077, kI .00027, kP .0075, kD kp  
     public static double flyWheelSpeed = 0.75;
     public static double colorSpeed = 0.2; 
     public static double pulleySpeed = .25; 
+    public static double intakeSpeed = .4; 
+    public static int shooterSpeed = 8700; 
+    public static int shooterUBound = shooterSpeed + 2000; 
+    public static int shooterLBound = shooterSpeed - 125; 
 
     //enums
     public static enum RoboDir { 

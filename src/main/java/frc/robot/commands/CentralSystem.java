@@ -37,6 +37,7 @@ public class CentralSystem extends CommandBase {
   
   
   private int x; 
+  private int timePastSensor; 
 
   public CentralSystem(Pulley pulley, Shooter shooter, Intake intake, Joystick stick) {
     addRequirements(pulley, shooter, intake);
@@ -69,6 +70,8 @@ public class CentralSystem extends CommandBase {
     * and reducing lag in the system. 
     */
     x++;
+    timePastSensor++; 
+
     if (x > 3){  
       System.out.println(string);  
       x = 0; 
@@ -88,6 +91,7 @@ public class CentralSystem extends CommandBase {
   private void automatedPulley() {
     if (pulley.getBottomSensor() && !created) {
       ballHandler.addBall(new Ball());
+      timePastSensor = 0;
       created = true; 
     }
 
@@ -103,7 +107,7 @@ public class CentralSystem extends CommandBase {
     }
 
     if(ballHandler.numBallsInRobot() == 1) {
-      if(!lastBall.getPastSensor()) {
+      if(!lastBall.getPastSensor() && timePastSensor < 50) {
         pulley.run(.25); 
       } else {
         pulley.stop(); 
@@ -124,7 +128,7 @@ public class CentralSystem extends CommandBase {
     }
 
     if(hold) { 
-      shooter.toVelocity(8500);
+      shooter.toVelocity(Constants.shooterSpeed);
       shootMode = true; 
     } else {
       shooter.stopShooter(); 
@@ -150,7 +154,7 @@ public class CentralSystem extends CommandBase {
   }
 
   private void flyWheel() {
-    if(stick.getRawButton(2) && !manual && shooter.getVelocity() > 8400) {
+    if(stick.getRawButton(2) && !manual && shooter.getVelocity() > Constants.shooterLBound && shooter.getVelocity() < Constants.shooterUBound) {
       shooter.runFlyWheel();
     } else {
       shooter.stopFlyWheel();
@@ -166,11 +170,13 @@ public class CentralSystem extends CommandBase {
   private void intake() {
     if(!pulley.getBottomSensor() || manual) {
       if(stick.getRawButton(5))
-        intake.run(.3); 
+        intake.run(Constants.intakeSpeed); 
       else if (stick.getRawButton(6))
-        intake.run(-.3); 
+        intake.run(-.75 * Constants.intakeSpeed); 
       else
         intake.stop(); 
+    } else if (stick.getRawButton(6)) {
+      intake.run(-.75 * Constants.intakeSpeed); 
     } else {
       intake.stop(); 
     }
@@ -201,7 +207,7 @@ public class CentralSystem extends CommandBase {
 
   private void manualShooter() {
     if(stick.getRawButton(1)){
-      shooter.toVelocity(8500);
+      shooter.toVelocity(Constants.shooterSpeed);
     } else {
       shooter.toVelocity(0); 
     }
@@ -218,8 +224,8 @@ public class CentralSystem extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //print("VELOCITY: " + shooter.getVelocity()); 
-    print("NUM BALLS: " + ballHandler.numBallsInRobot()); 
+    print("VELOCITY: " + shooter.getVelocity()); 
+    //print("NUM BALLS: " + ballHandler.numBallsInRobot()); 
 
     flipButtons(); 
     removeAllBalls(stick.getRawButton(3)); 

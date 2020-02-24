@@ -9,23 +9,23 @@ package frc.robot.commands.auton;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pulley;
 import frc.robot.subsystems.Shooter;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class LeftShortAuton extends SequentialCommandGroup {
+public class FiveBallAuton extends SequentialCommandGroup {
   /**
-   * Creates a new ShortAuton.
+   * Creates a new FiveBallAuton.
    */
-  public LeftShortAuton(DriveTrain driveTrain, Shooter shooter, Pulley pulley) {
+  public FiveBallAuton(DriveTrain driveTrain, Shooter shooter, Pulley pulley, Intake intake) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super(
-      new DriveCorrect(driveTrain, 0.125, .075, -60),
-      new Turn(driveTrain, 0.2, -39),
-      new Shoot(shooter, pulley)
+      new DriveCorrect(driveTrain, 0.125, 0.075, -80),
+      new AutonCentralSystem(intake, pulley)
     );
   }
 }

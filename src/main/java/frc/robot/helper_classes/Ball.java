@@ -21,6 +21,12 @@ public class Ball {
         pastSensor = false; 
     }
 
+    public Ball(boolean pastSensor) {
+        ballID = ballTotal; 
+        ballTotal++; 
+        this.pastSensor = pastSensor; 
+    }
+
     public static int getTotBall() {
         return ballTotal; 
     }

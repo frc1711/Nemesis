@@ -18,13 +18,18 @@ public class ColorManipulator extends CommandBase {
    * Creates a new ColorManager.
    */
   private ColorManager colorManager; 
+  private boolean stageThree; 
+  private boolean colorRetrieved; 
+  private int redCounter; 
 
   public ColorManipulator(ColorManager colorManager) {
-    this.colorManager = colorManager; 
+    this.colorManager = colorManager;
+    stageThree = false;  
   }
 
   private char getGameData() {
     try {
+      stageThree = true; 
       return DriverStation.getInstance().getGameSpecificMessage().charAt(0); 
     } catch (Exception e) {
       return ' '; 
@@ -36,12 +41,30 @@ public class ColorManipulator extends CommandBase {
     double r = detectedColor.red; 
     double g = detectedColor.green; 
     double b = detectedColor.blue; 
+    System.out.println(colorManager.categorizeColor(r, g, b)); 
     return colorManager.categorizeColor(r, g, b); 
+  }
+
+  private boolean getRotFinished() {
+    if(getColor() == 'R' && !colorRetrieved) { //this is arbitrary. blame jakob.
+      redCounter++; 
+      colorRetrieved = true; 
+    } else if (getColor() != 'R') {
+      colorRetrieved = false; 
+    }
+
+    System.out.println(redCounter); 
+
+    if(redCounter > 6)
+      return true; 
+    else 
+      return false; 
   }
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     colorManager.stop(); 
+    redCounter = 0; 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -59,8 +82,12 @@ public class ColorManipulator extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(getGameData() == getColor())
+    if(stageThree && getGameData() == getColor())
       return true; 
+    
+    if(getGameData() != getColor() && getRotFinished())
+      return true; 
+  
     return false;
   }
 }
