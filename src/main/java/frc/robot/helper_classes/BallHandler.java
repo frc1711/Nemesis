@@ -27,7 +27,7 @@ public class BallHandler {
         for(Ball b : ball) 
             ballList.add(b); 
     }
-    
+
     public void removeBall(int ballID) {
         for(Ball b : ballList) {
             if(b.getID() == ballID) {
@@ -39,6 +39,14 @@ public class BallHandler {
     public void removeHighestBall() {
         if (ballList.size() != 0)
             ballList.remove(ballList.size() -1); 
+    }
+
+    public void removeAllBalls() {
+        for(int i = 0; i < ballList.size(); i++) {
+            ballList.remove(i); 
+            System.out.println(i); 
+        }
+        System.out.println(ballList.size()); 
     }
 
     public int numBallsInRobot() {

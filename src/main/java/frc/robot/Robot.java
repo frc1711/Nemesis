@@ -38,6 +38,7 @@ public class Robot extends TimedRobot {
     // autonomous choose  r on the dashboard.
     robotContainer = new RobotContainer();
     UsbCamera cam0 = CameraServer.getInstance().startAutomaticCapture();
+    UsbCamera cam1 = CameraServer.getInstance().startAutomaticCapture(); 
   }
 
   /**

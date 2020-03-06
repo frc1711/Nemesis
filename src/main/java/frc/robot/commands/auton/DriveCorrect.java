@@ -7,6 +7,8 @@
 
 package frc.robot.commands.auton;
 
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.RoboDir;
 import frc.robot.subsystems.DriveTrain;
@@ -33,6 +35,7 @@ public class DriveCorrect extends CommandBase {
       forward = false; 
     else
       forward = true; 
+  
   }
 
   // Called when the command is initially scheduled.
@@ -41,13 +44,14 @@ public class DriveCorrect extends CommandBase {
     driveTrain.stop(); 
     driveTrain.zeroEncoders(); 
     driveTrain.zeroGyro(); 
+    driveTrain.setIdleMode(IdleMode.kBrake);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     double encoderCounts = driveTrain.getAvgEncCount(driveTrain.getEncCount());    
-    System.out.println(driveTrain.getYaw()); 
+    System.out.println(encoderCounts); 
     if(forward) { 
       //subtract encoder counts from target count to get dist away
        if(Math.abs(driveTrain.getYaw()) < 1){

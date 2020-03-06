@@ -24,6 +24,7 @@ public class Pulley extends SubsystemBase {
 
   private DigitalInput bottomSensor; 
   private DigitalInput middleSensor; 
+  private DigitalInput topSensor; 
 
   private PIDHelp pidHelp; 
 
@@ -39,6 +40,7 @@ public class Pulley extends SubsystemBase {
 
     bottomSensor = new DigitalInput(Constants.bottomSensor); 
     middleSensor = new DigitalInput(Constants.middleSensor); 
+    topSensor = new DigitalInput(Constants.topSensor); 
 
     pidHelp = new PIDHelp(); 
   }
@@ -73,6 +75,10 @@ public class Pulley extends SubsystemBase {
   
   public boolean getMiddleSensor() {
     return !middleSensor.get(); 
+  }
+
+  public boolean getTopSensor() {
+    return !topSensor.get(); 
   }
 
   @Override

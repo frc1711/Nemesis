@@ -24,8 +24,16 @@ public class FiveBallAuton extends SequentialCommandGroup {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super(
-      new DriveCorrect(driveTrain, 0.125, 0.075, -80),
-      new AutonCentralSystem(intake, pulley)
+      new DriveCorrect(driveTrain, 0.4, 0.075, 35),
+      new Delay(.3),
+      new IntakeDrive(driveTrain, intake, pulley),
+      new DriveCorrect(driveTrain, 0.4, .075, -82),
+      new DriveCorrect(driveTrain, 0.4, .075, -40),
+      new Turn(driveTrain, 0.5, 22),
+      new Delay(.4), 
+      new DriveCorrect(driveTrain, 0.3, .075, -40), 
+      new Shoot(shooter, pulley, 5), 
+      new ResetDrive(driveTrain)    
     );
   }
 }

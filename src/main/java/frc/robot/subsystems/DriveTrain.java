@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -172,6 +173,13 @@ public class DriveTrain extends SubsystemBase {
     frontRightDrive.set(-speed); 
     rearLeftDrive.set(speed);
     rearRightDrive.set(-speed);
+  }
+
+  public void setIdleMode(IdleMode idleMode) {
+    frontLeftDrive.setIdleMode(idleMode); 
+    frontRightDrive.setIdleMode(idleMode); 
+    rearLeftDrive.setIdleMode(idleMode); 
+    rearRightDrive.setIdleMode(idleMode); 
   }
 
   public void zeroEncoders() {

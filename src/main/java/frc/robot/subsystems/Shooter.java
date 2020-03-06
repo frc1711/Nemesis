@@ -28,8 +28,6 @@ public class Shooter extends SubsystemBase {
 
   private WPI_TalonSRX flyWheel;
 
-  private DigitalInput topSensor; 
-
   private PIDHelp pidHelp = new PIDHelp(); 
   
 
@@ -38,7 +36,6 @@ public class Shooter extends SubsystemBase {
     altShooterTalon = new WPI_TalonSRX(Constants.shooterTwo); 
     flyWheel = new WPI_TalonSRX(Constants.flyWheel);
   
-    topSensor = new DigitalInput(2); 
 
     shooterTalon.setSafetyEnabled(false); 
     altShooterTalon.setSafetyEnabled(false); 
@@ -87,10 +84,6 @@ public class Shooter extends SubsystemBase {
 
   public void stopFlyWheel() {
     flyWheel.set(0);
-  }
-
-  public boolean getTopSensor() {
-    return !topSensor.get(); 
   }
 
   @Override

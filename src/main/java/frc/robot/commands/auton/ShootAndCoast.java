@@ -7,7 +7,7 @@
 
 package frc.robot.commands.auton;
 
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Pulley;
 import frc.robot.subsystems.Shooter;
@@ -15,18 +15,15 @@ import frc.robot.subsystems.Shooter;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class RightShortAuton extends SequentialCommandGroup {
+public class ShootAndCoast extends ParallelCommandGroup {
   /**
-   * Creates a new RightShortAuton.
+   * Creates a new ShootAndCoast.
    */
-  public RightShortAuton(DriveTrain driveTrain, Shooter shooter, Pulley pulley) {
+  public ShootAndCoast(DriveTrain driveTrain, Shooter shooter, Pulley pulley) {
     // Add your commands in the super() call, e.g.
-    // super(new FooCommand(), new BarCommand());
-    
-    super (
-      new DriveCorrect(driveTrain, 0.32, .055, -72),
-      new Turn(driveTrain, 0.2, 39),
-      new Shoot(shooter, pulley, 3)
+    // super(new FooCommand(), new BarCommand());super();
+    super(
+      
     );
   }
 }

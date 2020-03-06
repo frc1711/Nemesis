@@ -30,7 +30,7 @@ public class AutonCentralSystem extends CommandBase {
 
   public AutonCentralSystem(Intake intake, Pulley pulley, int timeout) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intake); 
+    addRequirements(intake, pulley); 
     this.intake = intake; 
     this.pulley = pulley; 
     ballHandler = new BallHandler(); 
@@ -44,30 +44,42 @@ public class AutonCentralSystem extends CommandBase {
     ballHandler.addBall(new Ball(true), new Ball(true), new Ball(true)); 
     intake.stop(); 
     pulley.stop(); 
-    created = false;
+    created = true;
     pastMiddle = false;  
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println(ballHandler.numBallsInRobot()); 
     sinceStart++; 
+    intake.run(Constants.intakeSpeed); 
+
     if(pulley.getBottomSensor() && !created) {
+      System.out.println("A"); 
       ballHandler.addBall(new Ball()); 
-    } else {
+      created = true; 
+    } else if (!pulley.getBottomSensor()) {
       created = false; 
     }
 
-    if(pulley.getMiddleSensor() && !pastMiddle) {
+    if(ballHandler.getSecondToLastBallHandled().getPastSensor() && !ballHandler.getLastBallHandled().getPastSensor())
+      pulley.run(Constants.pulleySpeed); 
+
+    if(pulley.getMiddleSensor() && !pastMiddle && !pulley.getBottomSensor()) {
+      System.out.println("B"); 
       ballHandler.getLastBallHandled().setPastSensor(true);
-      
+      pulley.stop(); 
       pastMiddle = true; 
     } else {
       pastMiddle = false; 
     }
 
-    if(!ballHandler.getLastBallHandled().getPastSensor()) {
+    if(!ballHandler.getLastBallHandled().getPastSensor() && !pulley.getTopSensor()) {
+      System.out.println("C"); 
       pulley.run(Constants.pulleySpeed); 
+    } else {
+      pulley.stop(); 
     }
     
   }
@@ -82,7 +94,11 @@ public class AutonCentralSystem extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (pulley.getMiddleSensor()) {
+    if (sinceStart >= timeout) {
+      ballHandler.removeAllBalls();
+      return true; 
+    } else if (ballHandler.numBallsInRobot() == 5) {
+      ballHandler.removeAllBalls(); 
       return true; 
     }
     return false;

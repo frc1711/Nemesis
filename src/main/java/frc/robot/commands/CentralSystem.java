@@ -35,9 +35,9 @@ public class CentralSystem extends CommandBase {
   private boolean destroyed; 
   private boolean manual; 
   
-  
+  private int timeout; 
+  private int timeSinceStart; 
   private int x; 
-  private int timePastSensor; 
 
   public CentralSystem(Pulley pulley, Shooter shooter, Intake intake, Joystick stick) {
     addRequirements(pulley, shooter, intake);
@@ -46,6 +46,8 @@ public class CentralSystem extends CommandBase {
     this.intake = intake; 
     this.shooter = shooter; 
     this.stick = stick; 
+
+    timeout = 100; 
 
     defaultButtons();
     manual = false; 
@@ -58,6 +60,7 @@ public class CentralSystem extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    timeSinceStart = 0; 
     pulley.stop(); 
     shooter.stopShooter(); 
     shooter.stopFlyWheel(); 
@@ -70,8 +73,6 @@ public class CentralSystem extends CommandBase {
     * and reducing lag in the system. 
     */
     x++;
-    timePastSensor++; 
-
     if (x > 3){  
       System.out.println(string);  
       x = 0; 
@@ -91,8 +92,8 @@ public class CentralSystem extends CommandBase {
   private void automatedPulley() {
     if (pulley.getBottomSensor() && !created) {
       ballHandler.addBall(new Ball());
-      timePastSensor = 0;
       created = true; 
+      timeSinceStart = 0; 
     }
 
     Ball lastBall = ballHandler.getLastBallHandled(); 
@@ -107,7 +108,7 @@ public class CentralSystem extends CommandBase {
     }
 
     if(ballHandler.numBallsInRobot() == 1) {
-      if(!lastBall.getPastSensor() && timePastSensor < 50) {
+      if(!lastBall.getPastSensor()) {
         pulley.run(.25); 
       } else {
         pulley.stop(); 
@@ -118,6 +119,10 @@ public class CentralSystem extends CommandBase {
     } else {
       pulley.stop(); 
       created = false; 
+    }
+
+    if(timeSinceStart > timeout) {
+      pulley.stop(); 
     }
   }
   
@@ -134,14 +139,14 @@ public class CentralSystem extends CommandBase {
       shooter.stopShooter(); 
     }
 
-    if(!shooter.getTopSensor()) {
+    if(!pulley.getTopSensor()) {
       destroyed = false; 
       if(shootMode) {
-        pulley.run(Constants.pulleySpeed); 
+        pulley.run(Constants.pulleySpeed + .1); 
       }
     }
 
-    if(shooter.getTopSensor()){
+    if(pulley.getTopSensor()){
       pulley.stop(); 
       if(!destroyed) {
           ballHandler.removeHighestBall(); 
@@ -226,7 +231,7 @@ public class CentralSystem extends CommandBase {
   public void execute() {
     print("VELOCITY: " + shooter.getVelocity()); 
     //print("NUM BALLS: " + ballHandler.numBallsInRobot()); 
-
+    timeSinceStart++; 
     flipButtons(); 
     removeAllBalls(stick.getRawButton(3)); 
     intake(); 

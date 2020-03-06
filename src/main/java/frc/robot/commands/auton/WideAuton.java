@@ -26,7 +26,7 @@ public class WideAuton extends SequentialCommandGroup {
       new Drive(driveTrain, 0.1, -32.6),
       new Turn(driveTrain, 0.3, -34),
       new Drive(driveTrain, 0.1, -164.2),
-      new Shoot(shooter, pulley)
+      new Shoot(shooter, pulley, 3)
     );
   }
 }

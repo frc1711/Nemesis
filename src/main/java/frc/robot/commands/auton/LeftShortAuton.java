@@ -23,9 +23,9 @@ public class LeftShortAuton extends SequentialCommandGroup {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super(
-      new DriveCorrect(driveTrain, 0.125, .075, -60),
+      new DriveCorrect(driveTrain, 0.32, .055, -70),
       new Turn(driveTrain, 0.2, -39),
-      new Shoot(shooter, pulley)
+      new Shoot(shooter, pulley, 3)
     );
   }
 }

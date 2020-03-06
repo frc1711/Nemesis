@@ -19,10 +19,12 @@ public class Shoot extends CommandBase {
   private Pulley pulley; 
   private BallHandler ballHandler; 
   private boolean destroyed; 
+  private int numBalls; 
 
-  public Shoot(Shooter shooter, Pulley pulley) {
+  public Shoot(Shooter shooter, Pulley pulley, int numBalls) {
     this.shooter = shooter; 
     this.pulley = pulley; 
+    this.numBalls = numBalls; 
     destroyed = false; 
     ballHandler = new BallHandler();  
     addRequirements(shooter, pulley); 
@@ -30,9 +32,9 @@ public class Shoot extends CommandBase {
 
   @Override
   public void initialize() {
-    ballHandler.addBall(new Ball()); 
-    ballHandler.addBall(new Ball()); 
-    ballHandler.addBall(new Ball());
+    for (int i = 0; i < numBalls; i++) {
+      ballHandler.addBall(new Ball()); 
+    }
     
     shooter.stopFlyWheel();
     shooter.stopShooter();
@@ -41,7 +43,7 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
     shooter.toVelocity(8500);
-    if(shooter.getVelocity() > 8300 && shooter.getVelocity() < 8700 && shooter.getTopSensor()) {
+    if(shooter.getVelocity() > 8300 && shooter.getVelocity() < 8700 && pulley.getTopSensor()) {
       shooter.runFlyWheel(); 
       if (!destroyed){
         System.out.println("DESTROYED!"); 
@@ -52,7 +54,7 @@ public class Shoot extends CommandBase {
       shooter.stopFlyWheel(); 
     }
 
-    if(!shooter.getTopSensor()) {
+    if(!pulley.getTopSensor()) {
       pulley.run(.25); 
       destroyed = false; 
     } else {

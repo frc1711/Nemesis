@@ -25,7 +25,7 @@ public class StraightAuton extends SequentialCommandGroup {
     super(
       //new DriveCorrect(driveTrain, 0.125, .1, -79.2),
       new DriveCorrect(driveTrain, .125, .125, -79.2), 
-      new Shoot(shooter, pulley)
+      new Shoot(shooter, pulley, 3)
     );
   }
 }

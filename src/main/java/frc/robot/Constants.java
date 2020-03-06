@@ -61,8 +61,8 @@ public final class Constants {
     //speed = 8350, kF .077, kI .00027, kP .0075, kD kp  
     public static double flyWheelSpeed = 0.75;
     public static double colorSpeed = 0.2; 
-    public static double pulleySpeed = .25; 
-    public static double intakeSpeed = .4; 
+    public static double pulleySpeed = .35; 
+    public static double intakeSpeed = .45; 
     public static int shooterSpeed = 8700; 
     public static int shooterUBound = shooterSpeed + 2000; 
     public static int shooterLBound = shooterSpeed - 125; 

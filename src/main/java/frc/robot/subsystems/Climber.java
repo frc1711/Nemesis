@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -25,6 +26,10 @@ public class Climber extends SubsystemBase {
 
   public void set(double speed) {
     climberTalon.set(speed * .4); 
+  }
+  
+  public void setPosition(int position) {
+    climberTalon.set(ControlMode.Position, position); 
   }
   
   public void stop() {
